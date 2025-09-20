@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+// Check if user is already logged in
+if (isset($_SESSION['customer_id'])) {
+    header('Location: ../index.php');
+    exit();
+}
+
+// Check for logout message
+$logout_message = '';
+if (isset($_GET['message']) && $_GET['message'] == 'logged_out') {
+    $logout_message = '<div class="alert alert-success text-center">You have been successfully logged out.</div>';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -126,11 +141,8 @@
                         <h4>Login</h4>
                     </div>
                     <div class="card-body">
-                        <!-- Alert Messages (To be handled by backend) -->
-                        <!-- Example:
-                        <div class="alert alert-info text-center">Login successful!</div>
-                        -->
-
+                        <?php echo $logout_message; ?>
+                        
                         <form method="POST" action="" class="mt-4" id="login-form">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email <i class="fa fa-envelope"></i></label>

@@ -37,7 +37,12 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // Attempt to login the customer
-$customer = login_customer_ctr($email, $password);
+$login_data = array(
+    'email' => $email,
+    'password' => $password
+);
+
+$customer = login_customer_ctr($login_data);
 
 if ($customer) {
     // Login successful - start session

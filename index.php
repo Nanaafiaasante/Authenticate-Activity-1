@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+// Check if user is logged in
+$is_logged_in = isset($_SESSION['customer_id']);
+$customer_name = $_SESSION['customer_name'] ?? '';
+$user_role = $_SESSION['user_role'] ?? 0;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,6 +49,13 @@
 			font-size: 0.875rem;
 		}
 
+		.user-info {
+			color: #8b766c;
+			font-size: 0.9rem;
+			margin-right: 10px;
+			font-weight: 500;
+		}
+
 		/* Custom button styling */
 		.btn-outline-primary {
 			color: #c4967c;
@@ -66,6 +81,30 @@
 			color: white;
 		}
 
+		.btn-outline-info {
+			color: #7c9bb5;
+			border-color: #7c9bb5;
+			background: transparent;
+		}
+
+		.btn-outline-info:hover {
+			background-color: #7c9bb5;
+			border-color: #7c9bb5;
+			color: white;
+		}
+
+		.btn-outline-danger {
+			color: #c67c7c;
+			border-color: #c67c7c;
+			background: transparent;
+		}
+
+		.btn-outline-danger:hover {
+			background-color: #c67c7c;
+			border-color: #c67c7c;
+			color: white;
+		}
+
 		/* Decorative corner elements for the box */
 		.welcome-section::before {
 			content: '✨';
@@ -83,6 +122,15 @@
 			right: 20px;
 			font-size: 1.2rem;
 			opacity: 0.6;
+		}
+
+		/* Admin welcome decorations */
+		.welcome-section.admin::before {
+			content: '👑';
+		}
+
+		.welcome-section.admin::after {
+			content: '👑';
 		}
 
 		/* Main container */
@@ -127,6 +175,21 @@
 			opacity: 0.85;
 		}
 
+		/* Admin badge */
+		.admin-badge {
+			display: inline-block;
+			background: linear-gradient(135deg, #7c9bb5, #a8c5d8);
+			color: white;
+			padding: 4px 12px;
+			border-radius: 12px;
+			font-size: 0.8rem;
+			font-weight: 600;
+			margin-top: 15px;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			box-shadow: 0 2px 8px rgba(124, 155, 181, 0.3);
+		}
+
 		/* Subtle accent elements */
 		.accent-dot {
 			position: absolute;
@@ -159,7 +222,7 @@
 				padding: 10px 14px;
 			}
 			
-			.menu-tray span {
+			.menu-tray span, .user-info {
 				font-size: 0.85rem;
 			}
 			
@@ -179,8 +242,14 @@
 		}
 
 		@media (max-width: 480px) {
-			.menu-tray span {
+			.menu-tray span:not(.user-info) {
 				display: none;
+			}
+			
+			.user-info {
+				display: block;
+				margin-bottom: 5px;
+				margin-right: 0;
 			}
 			
 			.welcome-section {
@@ -208,15 +277,35 @@
 	<div class="accent-dot"></div>
 
 	<div class="menu-tray">
-		<span class="me-2">Menu:</span>
-		<a href="login/register.php" class="btn btn-sm btn-outline-primary">Register</a>
-		<a href="login/login.php" class="btn btn-sm btn-outline-secondary">Login</a>
+		<?php if ($is_logged_in): ?>
+			<!-- Logged in menu -->
+			<span class="user-info">Welcome, <?php echo htmlspecialchars($customer_name); ?>!</span>
+			<?php if ($user_role == 1): ?>
+				<a href="admin/dashboard.php" class="btn btn-sm btn-outline-info">Admin Panel</a>
+			<?php endif; ?>
+			<a href="login/logout.php" class="btn btn-sm btn-outline-danger">Logout</a>
+		<?php else: ?>
+			<!-- Guest menu -->
+			<span class="me-2">Menu:</span>
+			<a href="login/register.php" class="btn btn-sm btn-outline-primary">Register</a>
+			<a href="login/login.php" class="btn btn-sm btn-outline-secondary">Login</a>
+		<?php endif; ?>
 	</div>
 
-	<div class="container" style="padding-top:120px;">
-		<div class="welcome-section">
-			<h1>Welcome</h1>
-			<p class="text-muted">Use the menu in the top-right to Register or Login.</p>
+	<div class="container">
+		<div class="welcome-section <?php echo ($user_role == 1) ? 'admin' : ''; ?>">
+			<?php if ($is_logged_in): ?>
+				<h1>Welcome back!</h1>
+				<p>Hello <?php echo htmlspecialchars($customer_name); ?>, you are successfully logged in to your account.</p>
+				
+				<?php if ($user_role == 1): ?>
+					<div class="admin-badge">Administrator</div>
+				<?php endif; ?>
+				
+			<?php else: ?>
+				<h1>Welcome</h1>
+				<p>Use the menu in the top-right to Register or Login.</p>
+			<?php endif; ?>
 		</div>
 	</div>
 

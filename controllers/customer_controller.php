@@ -145,12 +145,21 @@ function update_customer_password_ctr($customer_id, $new_password)
 
 /**
  * Login customer with email and password
- * @param string $email
- * @param string $password
+ * @param array $kwargs - associative array containing login credentials
  * @return array|false - customer data if login successful, false if failed
  */
-function login_customer_ctr($email, $password)
+function login_customer_ctr($kwargs)
 {
     $customer = new Customer();
+    
+    // Extract email and password from kwargs
+    $email = $kwargs['email'] ?? '';
+    $password = $kwargs['password'] ?? '';
+    
+    // Validate required fields
+    if (empty($email) || empty($password)) {
+        return false;
+    }
+    
     return $customer->loginCustomer($email, $password);
 }
