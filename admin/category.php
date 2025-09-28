@@ -114,7 +114,7 @@ $page_title = "Category Management";
                 <div class="col-md-6">
                     <h2 class="mb-0">
                         <i class="bi bi-tags-fill me-2"></i>
-                        Category Management
+                        VendorConnect Ghana
                     </h2>
                 </div>
                 <div class="col-md-6 text-end">
