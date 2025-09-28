@@ -281,7 +281,7 @@ $user_role = $_SESSION['user_role'] ?? 0;
 			<!-- Logged in menu -->
 			<span class="user-info">Welcome, <?php echo htmlspecialchars($customer_name); ?>!</span>
 			<?php if ($user_role == 1): ?>
-				<a href="admin/dashboard.php" class="btn btn-sm btn-outline-info">Admin Panel</a>
+				<a href="admin/category.php" class="btn btn-sm btn-outline-info">Category</a>
 			<?php endif; ?>
 			<a href="login/logout.php" class="btn btn-sm btn-outline-danger">Logout</a>
 		<?php else: ?>

@@ -176,9 +176,7 @@ if (isset($_SESSION['customer_id'])) {
                                 <div class="form-text">Valid phone number format</div>
                             </div>
                             <div class="mb-4">
-                                <small class="text-muted">
-                                    <i class="fa fa-info-circle"></i> You will be registered as a Customer by default.
-                                </small>
+                                
                             </div>
                             <button type="submit" class="btn btn-custom w-100 animate-pulse-custom" id="register-btn">
                                 <span class="btn-text">Register</span>

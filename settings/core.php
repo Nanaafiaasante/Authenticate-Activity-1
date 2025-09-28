@@ -1,4 +1,3 @@
-// Settings/core.php
 <?php
 session_start();
 
@@ -26,12 +25,6 @@ function check_admin() {
 //function to check if user has administrative privileges
 function has_admin_privileges() {
     return check_login() && isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1;
-}
-
-// Auto-redirect if not logged in (optional - remove if not needed)
-if (!isset($_SESSION['customer_id'])) {
-    header("Location: ../login/login.php");
-    exit;
 }
 
 ?>

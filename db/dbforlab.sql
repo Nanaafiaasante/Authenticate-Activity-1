@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `shoppn`
 --
+drop database if exists `shoppn`;
 CREATE DATABASE IF NOT EXISTS `shoppn`;
 USE `shoppn`;
 -- --------------------------------------------------------
@@ -54,7 +55,9 @@ CREATE TABLE `cart` (
 
 CREATE TABLE `categories` (
   `cat_id` int(11) NOT NULL,
-  `cat_name` varchar(100) NOT NULL
+  `cat_name` varchar(100) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -263,6 +266,12 @@ ALTER TABLE `orders`
 ALTER TABLE `payment`
   ADD CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
   ADD CONSTRAINT `payment_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+
+--
+-- Constraints for table `categories`
+--
+ALTER TABLE `categories`
+  ADD CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products`

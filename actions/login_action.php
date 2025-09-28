@@ -56,8 +56,8 @@ if ($customer) {
     
     // Determine redirect based on user role
     if ($customer['user_role'] == 1) {
-        // Admin
-        $response['redirect'] = '../admin/dashboard.php';
+        // Admin - redirect to category management
+        $response['redirect'] = '../admin/category.php';
     } else {
         // Regular customer
         $response['redirect'] = '../index.php';
