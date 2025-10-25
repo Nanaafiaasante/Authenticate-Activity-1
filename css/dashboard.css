@@ -1,0 +1,49 @@
+body {
+  background: linear-gradient(135deg, #faf7f5 0%, #f5f0ed 50%, #f0ebe8 100%);
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  color: #6b5b5b;
+}
+.header {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(234, 224, 218, 0.6);
+  padding: 1rem 0;
+  box-shadow: 0 2px 10px rgba(139, 118, 108, 0.05);
+}
+.page-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+}
+.card {
+  border: 1px solid rgba(234, 224, 218, 0.6);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(139, 118, 108, 0.06);
+}
+.btn-gradient {
+  background: linear-gradient(135deg, #7c9bb5, #a8c5d8);
+  color: white;
+  border: none;
+}
+.btn-outline {
+  border: 2px solid #7c9bb5;
+  color: #7c9bb5;
+  background: transparent;
+}
+.btn-outline:hover {
+  background: #7c9bb5;
+  color: white;
+}
+.badge-cat {
+  background: linear-gradient(135deg, #7c9bb5, #a8c5d8);
+}
+.badge-brand {
+  background: linear-gradient(135deg, #d4a574, #e8b98d);
+}
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #e8d5c4, #d4c4b8);
+}

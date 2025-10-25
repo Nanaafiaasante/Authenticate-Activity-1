@@ -56,11 +56,11 @@ if ($customer) {
     
     // Determine redirect based on user role
     if ($customer['user_role'] == 1) {
-        // Admin - redirect to category management
-        $response['redirect'] = '../admin/category.php';
+        // Admin - redirect to dashboard (my products)
+        $response['redirect'] = '../admin/dashboard.php';
     } else {
-        // Regular customer
-        $response['redirect'] = '../index.php';
+        // Regular customer - redirect to all products
+        $response['redirect'] = '../view/all_products.php';
     }
     
     $response['customer'] = array(

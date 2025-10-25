@@ -1,8 +1,10 @@
 <?php
 /**
- * Admin Category Management Page
- * Provides CRUD interface for category management
+ * Admin Brand Management Page
+ * Provides CRUD interface for brand management
  * Only accessible by admin users
+ * 
+ * For VendorConnect Ghana: Manages brands
  */
 
 require_once '../settings/core.php';
@@ -19,7 +21,7 @@ if (!check_admin()) {
     exit;
 }
 
-$page_title = "Category Management";
+$page_title = "Brand Management";
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +32,7 @@ $page_title = "Category Management";
     <title><?php echo $page_title; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/category.css">
+    <link rel="stylesheet" href="../css/brand.css">
 </head>
 <body>
     <!-- Admin Header -->
@@ -39,13 +41,14 @@ $page_title = "Category Management";
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <h2 class="mb-0">
-                        <i class="bi bi-tags-fill me-2"></i>
+                        <i class="bi bi-bag-fill me-2"></i>
                         VendorConnect Ghana
                     </h2>
+                    <small class="text-muted">Brand Management</small>
                 </div>
                 <div class="col-md-6 text-end">
-                    <a href="brand.php" class="btn btn-outline-secondary me-2">
-                        <i class="bi bi-bag me-1"></i>Brands
+                    <a href="category.php" class="btn btn-outline-secondary me-2">
+                        <i class="bi bi-tags me-1"></i>Categories
                     </a>
                     <a href="../index.php" class="btn btn-outline-secondary me-2">
                         <i class="bi bi-house me-1"></i>Home
@@ -62,24 +65,26 @@ $page_title = "Category Management";
         <!-- Alert Messages -->
         <div id="alertContainer"></div>
 
-        <!-- Add Category Card -->
-        <div class="card mb-4">
+        <!-- Add Brand Card -->
+        <div class="card">
             <div class="card-header">
                 <h5 class="mb-0">
                     <i class="bi bi-plus-circle me-2"></i>
-                    Add New Category
+                    Add New Brand
                 </h5>
             </div>
             <div class="card-body">
-                <form id="addCategoryForm">
+                <form id="addBrandForm">
                     <div class="row">
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" id="categoryName" name="cat_name" 
-                                   placeholder="Enter category name" required maxlength="100">
+                        <div class="col-md-9">
+                            <label for="brandName" class="form-label">Brand Name</label>
+                            <input type="text" class="form-control" id="brandName" name="brand_name" 
+                                   placeholder="e.g., Traditional Weddings, Beach Weddings, Cultural Ceremonies" required maxlength="100">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label class="form-label">&nbsp;</label>
                             <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-plus me-1"></i>Add Category
+                                <i class="bi bi-plus me-1"></i>Add Brand
                             </button>
                         </div>
                     </div>
@@ -87,67 +92,54 @@ $page_title = "Category Management";
             </div>
         </div>
 
-        <!-- Categories List Card -->
+        <!-- Brands List Card -->
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
                     <i class="bi bi-list-ul me-2"></i>
-                    Categories List
+                    Brands
                 </h5>
-                <button class="btn btn-outline-primary btn-sm" onclick="loadCategories()">
+                <button class="btn btn-outline-primary btn-sm" onclick="loadBrands()">
                     <i class="bi bi-arrow-clockwise me-1"></i>Refresh
                 </button>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Category Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="categoriesTableBody">
-                            <tr>
-                                <td colspan="3" class="text-center">
-                                    <div class="loading">
-                                        <i class="bi bi-hourglass-split me-2"></i>Loading categories...
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div id="brandsContainer">
+                    <div class="text-center">
+                        <div class="loading show">
+                            <i class="bi bi-hourglass-split me-2"></i>Loading brands...
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Edit Category Modal -->
-    <div class="modal fade" id="editCategoryModal" tabindex="-1">
+    <!-- Edit Brand Modal -->
+    <div class="modal fade" id="editBrandModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
                         <i class="bi bi-pencil-square me-2"></i>
-                        Edit Category
+                        Edit Brand
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editCategoryForm">
-                        <input type="hidden" id="editCategoryId" name="cat_id">
+                    <form id="editBrandForm">
+                        <input type="hidden" id="editBrandId" name="brand_id">
                         <div class="mb-3">
-                            <label for="editCategoryName" class="form-label">Category Name</label>
-                            <input type="text" class="form-control" id="editCategoryName" name="cat_name" 
+                            <label for="editBrandName" class="form-label">Brand Name</label>
+                            <input type="text" class="form-control" id="editBrandName" name="brand_name" 
                                    required maxlength="100">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="updateCategory()">
-                        <i class="bi bi-check me-1"></i>Update Category
+                    <button type="button" class="btn btn-primary" onclick="updateBrand()">
+                        <i class="bi bi-check me-1"></i>Update Brand
                     </button>
                 </div>
             </div>
@@ -155,7 +147,7 @@ $page_title = "Category Management";
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteCategoryModal" tabindex="-1">
+    <div class="modal fade" id="deleteBrandModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
@@ -166,14 +158,14 @@ $page_title = "Category Management";
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete this category?</p>
-                    <p class="text-muted small">This action cannot be undone.</p>
-                    <input type="hidden" id="deleteCategoryId">
+                    <p>Are you sure you want to delete this brand?</p>
+                    <p class="text-muted small">This action cannot be undone. Make sure no products are using this brand.</p>
+                    <input type="hidden" id="deleteBrandId">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-danger" onclick="confirmDelete()">
-                        <i class="bi bi-trash me-1"></i>Delete Category
+                        <i class="bi bi-trash me-1"></i>Delete Brand
                     </button>
                 </div>
             </div>
@@ -181,11 +173,11 @@ $page_title = "Category Management";
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/category.js"></script>
+    <script src="../js/brand.js"></script>
     <script>
-        // Load categories when page loads
+        // Load brands when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            loadCategories();
+            loadBrands();
         });
     </script>
 </body>

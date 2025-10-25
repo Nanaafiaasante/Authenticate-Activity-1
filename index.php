@@ -280,16 +280,34 @@ $user_role = $_SESSION['user_role'] ?? 0;
 		<?php if ($is_logged_in): ?>
 			<!-- Logged in menu -->
 			<span class="user-info">Welcome, <?php echo htmlspecialchars($customer_name); ?>!</span>
+			<a href="view/all_products.php" class="btn btn-sm btn-outline-primary">All Products</a>
 			<?php if ($user_role == 1): ?>
+				<!-- Admin menu -->
 				<a href="admin/category.php" class="btn btn-sm btn-outline-info">Category</a>
+				<a href="admin/brand.php" class="btn btn-sm btn-outline-info">Brand</a>
+				<a href="admin/product.php" class="btn btn-sm btn-outline-info">Add Product</a>
 			<?php endif; ?>
 			<a href="login/logout.php" class="btn btn-sm btn-outline-danger">Logout</a>
 		<?php else: ?>
 			<!-- Guest menu -->
 			<span class="me-2">Menu:</span>
+			<a href="view/all_products.php" class="btn btn-sm btn-outline-primary">All Products</a>
 			<a href="login/register.php" class="btn btn-sm btn-outline-primary">Register</a>
 			<a href="login/login.php" class="btn btn-sm btn-outline-secondary">Login</a>
 		<?php endif; ?>
+
+		<!-- Global search and quick filters -->
+		<form id="globalSearchForm" action="view/product_search_result.php" method="get" class="d-inline-flex align-items-center ms-2" onsubmit="return submitGlobalSearch(event)">
+			<input type="text" name="query" id="globalSearchInput" class="form-control form-control-sm" placeholder="Search products..." style="width: 180px; margin-right: 6px;">
+			<button type="submit" class="btn btn-sm btn-outline-info"><i class="bi bi-search"></i></button>
+		</form>
+
+		<select id="globalCategoryFilter" class="form-select form-select-sm d-inline-block ms-2" style="width: 150px;">
+			<option value="">Category</option>
+		</select>
+		<select id="globalBrandFilter" class="form-select form-select-sm d-inline-block ms-2" style="width: 150px;">
+			<option value="">Brand</option>
+		</select>
 	</div>
 
 	<div class="container">
@@ -310,5 +328,55 @@ $user_role = $_SESSION['user_role'] ?? 0;
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+	<script>
+	// Populate global filters and wire interactions
+	document.addEventListener('DOMContentLoaded', function () {
+		// Load options
+		fetch('actions/get_filter_options_action.php')
+			.then(r => r.json())
+			.then(d => {
+				if (d.status === 'success') {
+					const payload = d.data || d;
+					populateSelect('globalCategoryFilter', payload.categories || [], 'cat_id', 'cat_name', 'Category');
+					populateSelect('globalBrandFilter', payload.brands || [], 'brand_id', 'brand_name', 'Brand');
+				}
+			});
+
+		// On change navigate to All Products with params
+		document.getElementById('globalCategoryFilter').addEventListener('change', navigateToAllProductsWithFilters);
+		document.getElementById('globalBrandFilter').addEventListener('change', navigateToAllProductsWithFilters);
+	});
+
+	function populateSelect(id, list, valueKey, labelKey, placeholder) {
+		const sel = document.getElementById(id);
+		sel.innerHTML = `<option value="">${placeholder}</option>`;
+		list.forEach(item => {
+			const opt = document.createElement('option');
+			opt.value = item[valueKey];
+			opt.textContent = item[labelKey];
+			sel.appendChild(opt);
+		});
+	}
+
+	function navigateToAllProductsWithFilters() {
+		const cat = document.getElementById('globalCategoryFilter').value;
+		const brand = document.getElementById('globalBrandFilter').value;
+		const params = new URLSearchParams();
+		if (cat) params.set('category', cat);
+		if (brand) params.set('brand', brand);
+		const qs = params.toString();
+		window.location.href = qs ? `view/all_products.php?${qs}` : 'view/all_products.php';
+	}
+
+	function submitGlobalSearch(e) {
+		const input = document.getElementById('globalSearchInput');
+		if (!input.value.trim()) {
+			e.preventDefault();
+			return false;
+		}
+		return true;
+	}
+	</script>
 </body>
 </html>
