@@ -13,15 +13,15 @@ if (!defined("SERVER")) {
 }
 
 if (!defined("USERNAME")) {
-    define("USERNAME", "nana.asante");
+    define("USERNAME", "root");
 }
 
 if (!defined("PASSWD")) {
-    define("PASSWD", "Setumte!");
+    define("PASSWD", "");
 }
 
 if (!defined("DATABASE")) {
     // Use the database name from the provided SQL dump
-    define("DATABASE", "ecommerce_2025A_nana_asante");
+    define("DATABASE", "shoppn");
 }
 ?>
