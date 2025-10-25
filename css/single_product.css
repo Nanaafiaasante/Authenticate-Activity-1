@@ -1,0 +1,228 @@
+        :root {
+            --primary-color: #7c9bb5;
+            --secondary-color: #d4a574;
+            --text-dark: #6b5b5b;
+            --text-light: #8b766c;
+            --bg-light: #faf7f5;
+            --bg-white: #fffdfcbb;
+        }
+
+        body {
+            background: linear-gradient(135deg, #faf7f5 0%, #f5f0ed 50%, #f0ebe8 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+        }
+
+        .header-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(234, 224, 218, 0.6);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .product-detail-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(234, 224, 218, 0.6);
+            box-shadow: 0 8px 40px rgba(139, 118, 108, 0.12);
+            margin-bottom: 2rem;
+        }
+
+        .product-image-section {
+            position: relative;
+            background: linear-gradient(135deg, #e8d5c4, #d4c4b8);
+        }
+
+        .product-main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+
+        .product-info-section {
+            padding: 2.5rem;
+        }
+
+        .product-title-large {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .product-price-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .badge-large {
+            padding: 0.5rem 1.25rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-right: 0.75rem;
+            margin-bottom: 0.75rem;
+            display: inline-block;
+        }
+
+        .badge-category {
+            background: linear-gradient(135deg, var(--primary-color), #a8c5d8);
+            color: white;
+        }
+
+        .badge-brand {
+            background: linear-gradient(135deg, var(--secondary-color), #e8b98d);
+            color: white;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        .product-meta {
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(234, 224, 218, 0.6);
+        }
+
+        .meta-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .meta-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .meta-content {
+            flex-grow: 1;
+        }
+
+        .meta-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .vendor-card {
+            background: linear-gradient(135deg, #f8f6f4, #f0ebe8);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(234, 224, 218, 0.6);
+            margin-bottom: 2rem;
+        }
+
+        .vendor-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-cart {
+            background: linear-gradient(135deg, var(--secondary-color), #e8b98d);
+            border: none;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        .btn-cart:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 165, 116, 0.4);
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 5rem;
+        }
+
+        .spinner-border {
+            color: var(--primary-color);
+        }
+
+        .keywords-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid rgba(234, 224, 218, 0.6);
+        }
+
+        .keyword-tag {
+            display: inline-block;
+            background: white;
+            border: 2px solid rgba(234, 224, 218, 0.8);
+            color: var(--text-dark);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .product-main-image {
+                height: 300px;
+            }
+            
+            .product-info-section {
+                padding: 1.5rem;
+            }
+            
+            .product-title-large {
+                font-size: 1.75rem;
+            }
+            
+            .product-price-large {
+                font-size: 2rem;
+            }
+        }

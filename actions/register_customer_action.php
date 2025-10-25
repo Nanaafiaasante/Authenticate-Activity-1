@@ -31,7 +31,7 @@ $customer_pass = $_POST['customer_pass'] ?? '';
 $customer_country = trim($_POST['customer_country'] ?? '');
 $customer_city = trim($_POST['customer_city'] ?? '');
 $customer_contact = trim($_POST['customer_contact'] ?? '');
-$user_role = 1; // Default to customer role
+$user_role = 2; // Default to customer role
 
 // Basic server-side validation
 if (empty($customer_name) || empty($customer_email) || empty($customer_pass) || 

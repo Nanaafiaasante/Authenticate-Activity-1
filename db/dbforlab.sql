@@ -279,6 +279,31 @@ ALTER TABLE `categories`
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`product_cat`) REFERENCES `categories` (`cat_id`),
   ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`product_brand`) REFERENCES `brands` (`brand_id`);
+
+
+-- Update brands table to add user_id column only
+ALTER TABLE `brands`
+ADD COLUMN `user_id` int(11) NOT NULL AFTER `brand_name`,
+ADD COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `user_id`;
+
+-- Add foreign key constraint for brands (only user_id)
+ALTER TABLE `brands`
+ADD CONSTRAINT `brands_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Add unique constraint to ensure brand name is unique per user
+ALTER TABLE `brands`
+ADD UNIQUE KEY `unique_brand_user` (`brand_name`, `user_id`);
+
+-- Update products table to add user_id
+ALTER TABLE `products`
+ADD COLUMN `user_id` int(11) NOT NULL AFTER `product_keywords`,
+ADD COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `user_id`;
+
+-- Add foreign key constraint for products user_id
+ALTER TABLE `products`
+ADD CONSTRAINT `products_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
