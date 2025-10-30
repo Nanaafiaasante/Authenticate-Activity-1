@@ -12,19 +12,29 @@ if (isset($_SESSION['customer_id'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Register - Taste of Africa</title>
+    <title>Register - VendorConnect Ghana</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/register.css">
 </head>
 
 <body>
+    <!-- VENDORCONNECT GHANA LOGO -->
+    <a href="../index.php" class="vc-logo">
+        <div class="vc-logo-ring"></div>
+        <div class="vc-logo-text">
+            <div class="vc-logo-main">VendorConnect</div>
+            <div class="vc-logo-sub">GHANA</div>
+        </div>
+    </a>
+
     <div class="container register-container">
         <div class="row justify-content-center animate__animated animate__fadeInDown">
             <div class="col-md-6">
                 <div class="card animate__animated animate__zoomIn">
-                    <div class="card-header text-center highlight">
+                    <div class="card-header text-center">
                         <h4>Register</h4>
                     </div>
                     <div class="card-body">

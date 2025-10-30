@@ -1,115 +1,343 @@
-        .btn-custom {
-            background-color: #D19C97;
-            border-color: #D19C97;
-            color: #fff;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+/* VENDORCONNECT GHANA LOGO - Top Left Corner */
+.vc-logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
 
-        .btn-custom:hover {
-            background-color: #b77a7a;
-            border-color: #b77a7a;
-        }
+.vc-logo:hover {
+    transform: scale(1.05);
+}
 
-        .highlight {
-            color: #D19C97;
-            transition: color 0.3s;
-        }
+.vc-logo-ring {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #D4AF37 0%, #F4E4C1 50%, #C9A961 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 6px 20px rgba(212, 175, 55, 0.4),
+        inset 0 2px 8px rgba(255, 255, 255, 0.5);
+    position: relative;
+}
 
-        .highlight:hover {
-            color: #b77a7a;
-        }
+.vc-logo-ring::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle, #FFF 0%, #F4E4C1 100%);
+    border-radius: 50%;
+    box-shadow: inset 0 2px 4px rgba(201, 169, 97, 0.3);
+}
 
-        body {
-            /* Base background color */
-            background-color: #f8f9fa;
+.vc-logo-ring::after {
+    content: '💍';
+    position: absolute;
+    font-size: 22px;
+    z-index: 2;
+}
 
-            /* Gradient-like grid using repeating-linear-gradients */
-            background-image:
-                repeating-linear-gradient(0deg,
-                    #b77a7a,
-                    #b77a7a 1px,
-                    transparent 1px,
-                    transparent 20px),
-                repeating-linear-gradient(90deg,
-                    #b77a7a,
-                    #b77a7a 1px,
-                    transparent 1px,
-                    transparent 20px),
-                linear-gradient(rgba(183, 122, 122, 0.1),
-                    rgba(183, 122, 122, 0.1));
+.vc-logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
 
-            /* Blend the gradients for a subtle overlay effect */
-            background-blend-mode: overlay;
+.vc-logo-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c2c2c;
+    letter-spacing: 0.3px;
+}
 
-            /* Define the size of the grid */
-            background-size: 20px 20px;
+.vc-logo-sub {
+    font-size: 0.65rem;
+    color: #C9A961;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: -2px;
+}
 
-            /* Ensure the background covers the entire viewport */
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+/* BODY - White Marble Background matching index */
+body {
+    background: 
+        radial-gradient(ellipse at 15% 25%, rgba(230, 230, 230, 0.4) 0%, transparent 40%),
+        radial-gradient(ellipse at 85% 75%, rgba(220, 220, 220, 0.35) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 50%, rgba(240, 240, 240, 0.3) 0%, transparent 50%),
+        linear-gradient(180deg, #f5f5f5 0%, #ffffff 20%, #fafafa 40%, #ffffff 60%, #f8f8f8 80%, #ffffff 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', Arial, sans-serif;
+    position: relative;
+}
 
-        .register-container {
-            margin-top: 50px;
-        }
+/* Subtle marble veins */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(135deg, transparent 45%, rgba(200, 200, 200, 0.03) 46%, rgba(200, 200, 200, 0.03) 54%, transparent 55%),
+        linear-gradient(225deg, transparent 45%, rgba(210, 210, 210, 0.02) 46%, rgba(210, 210, 210, 0.02) 54%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+}
 
-        .card {
-            border: none;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
 
-        .card-header {
-            background-color: #D19C97;
-            color: #fff;
-        }
+/* Emerald green rose accent - top right corner */
+body::after {
+    content: '🌹';
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    font-size: 3.5rem;
+    opacity: 0.6;
+    z-index: 0;
+    pointer-events: none;
+    transform: rotate(15deg);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)) hue-rotate(100deg) saturate(1.5);
+}
 
-        .custom-radio .form-check-input:checked+.form-check-label::before {
-            background-color: #D19C97;
-            border-color: #D19C97;
-        }
 
-        .form-check-label {
-            position: relative;
-            padding-left: 2rem;
-            cursor: pointer;
-        }
+.register-container {
+    margin-top: 50px;
+    position: relative;
+    z-index: 10;
+}
 
-        .form-check-label::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1rem;
-            height: 1rem;
-            border: 2px solid #D19C97;
-            border-radius: 50%;
-            background-color: #fff;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+/* Card Styling - matching index elegance */
+.card {
+    border: 1px solid rgba(201, 169, 97, 0.25);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 45px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+}
 
-        .form-check-input:focus+.form-check-label::before {
-            box-shadow: 0 0 0 0.2rem rgba(209, 156, 151, 0.5);
-        }
+.card-header {
+    background: linear-gradient(135deg, #C9A961 0%, #D4AF37 100%);
+    color: #fff;
+    padding: 1.5rem;
+    border: none;
+}
 
-        .animate-pulse-custom {
-            animation: pulse 2s infinite;
-        }
+.card-header h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
+.card-body {
+    padding: 2.5rem;
+}
 
-            50% {
-                transform: scale(1.05);
-            }
+.card-footer {
+    background: rgba(249, 249, 249, 0.5);
+    border-top: 1px solid rgba(201, 169, 97, 0.15);
+    padding: 1.2rem;
+}
 
-            100% {
-                transform: scale(1);
-            }
-        }
+/* Form Labels */
+.form-label {
+    color: #2c2c2c;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-label i {
+    color: #C9A961;
+    margin-left: 5px;
+}
+
+/* Form Controls */
+.form-control {
+    border: 1.5px solid rgba(201, 169, 97, 0.3);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.form-control:focus {
+    border-color: #C9A961;
+    box-shadow: 0 0 0 0.25rem rgba(201, 169, 97, 0.15);
+    background: #fff;
+}
+
+.form-text {
+    color: #666;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+/* Button Custom - Gold Theme */
+.btn-custom {
+    background: linear-gradient(135deg, #C9A961 0%, #D4AF37 100%);
+    border: none;
+    color: #fff;
+    padding: 0.9rem 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(201, 169, 97, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(135deg, #D4AF37 0%, #C9A961 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(201, 169, 97, 0.5);
+    color: #fff;
+}
+
+.btn-custom:active {
+    transform: translateY(0);
+}
+
+/* Highlight links */
+.highlight {
+    color: #C9A961;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.highlight:hover {
+    color: #D4AF37;
+    text-decoration: underline;
+}
+
+/* Radio buttons custom styling */
+.custom-radio .form-check-input:checked+.form-check-label::before {
+    background-color: #C9A961;
+    border-color: #C9A961;
+}
+
+.form-check-label {
+    position: relative;
+    padding-left: 2rem;
+    cursor: pointer;
+    color: #2c2c2c;
+}
+
+.form-check-label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #C9A961;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.form-check-input:focus+.form-check-label::before {
+    box-shadow: 0 0 0 0.2rem rgba(201, 169, 97, 0.3);
+}
+
+/* Button pulse animation */
+.animate-pulse-custom {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Button spinner */
+.btn-spinner {
+    display: inline-block;
+}
+
+.d-none {
+    display: none;
+}
+
+/* Responsive logo */
+@media (max-width: 768px) {
+    .vc-logo {
+        top: 15px;
+        left: 15px;
+        gap: 8px;
+    }
+    
+    .vc-logo-ring {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .vc-logo-ring::before {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .vc-logo-ring::after {
+        font-size: 18px;
+    }
+    
+    .vc-logo-main {
+        font-size: 1.1rem;
+    }
+    
+    .vc-logo-sub {
+        font-size: 0.55rem;
+        letter-spacing: 2px;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    body::after {
+        font-size: 2.5rem;
+        top: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vc-logo-text {
+        display: none;
+    }
+    
+    .vc-logo-ring {
+        width: 50px;
+        height: 50px;
+    }
+
+    .card-header h4 {
+        font-size: 1.6rem;
+    }
+}
