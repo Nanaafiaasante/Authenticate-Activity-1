@@ -30,6 +30,33 @@ if (isset($_SESSION['customer_id'])) {
         </div>
     </a>
 
+    <!-- EMERALD GREEN BOTANICALS in all 4 corners -->
+<div class="botanical-tl"></div>
+<div class="botanical-tr"></div>
+<div class="botanical-bl"></div>
+<div class="botanical-br"></div>
+
+<!-- GOLD RECTANGULAR FRAMES -->
+<div class="gold-frame-tr"></div>
+<div class="gold-frame-bl"></div>
+
+<!-- SHINY GOLD DOTS scattered -->
+<div class="gold-dot dot-tr1"></div>
+<div class="gold-dot dot-tr2"></div>
+<div class="gold-dot dot-tr3"></div>
+<div class="gold-dot dot-tr4"></div>
+<div class="gold-dot dot-tr5"></div>
+<div class="gold-dot dot-tr6"></div>
+<div class="gold-dot dot-tr7"></div>
+
+<div class="gold-dot dot-bl1"></div>
+<div class="gold-dot dot-bl2"></div>
+<div class="gold-dot dot-bl3"></div>
+<div class="gold-dot dot-bl4"></div>
+<div class="gold-dot dot-bl5"></div>
+<div class="gold-dot dot-bl6"></div>
+<div class="gold-dot dot-bl7"></div>    
+
     <div class="container register-container">
         <div class="row justify-content-center animate__animated animate__fadeInDown">
             <div class="col-md-6">
