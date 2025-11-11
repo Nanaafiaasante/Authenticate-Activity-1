@@ -22,15 +22,52 @@ if (isset($_GET['message']) && $_GET['message'] == 'logged_out') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/login.css">
 </head>
 
 <body>
+    <!-- VENDORCONNECT GHANA LOGO -->
+    <a href="../index.php" class="vc-logo">
+        <div class="vc-logo-ring"></div>
+        <div class="vc-logo-text">
+            <div class="vc-logo-main">VendorConnect</div>
+            <div class="vc-logo-sub">GHANA</div>
+        </div>
+    </a>
+
+    <!-- EMERALD GREEN BOTANICALS in all 4 corners -->
+<div class="botanical-tl"></div>
+<div class="botanical-tr"></div>
+<div class="botanical-bl"></div>
+<div class="botanical-br"></div>
+
+<!-- GOLD RECTANGULAR FRAMES -->
+<div class="gold-frame-tr"></div>
+<div class="gold-frame-bl"></div>
+
+<!-- SHINY GOLD DOTS scattered -->
+<div class="gold-dot dot-tr1"></div>
+<div class="gold-dot dot-tr2"></div>
+<div class="gold-dot dot-tr3"></div>
+<div class="gold-dot dot-tr4"></div>
+<div class="gold-dot dot-tr5"></div>
+<div class="gold-dot dot-tr6"></div>
+<div class="gold-dot dot-tr7"></div>
+
+<div class="gold-dot dot-bl1"></div>
+<div class="gold-dot dot-bl2"></div>
+<div class="gold-dot dot-bl3"></div>
+<div class="gold-dot dot-bl4"></div>
+<div class="gold-dot dot-bl5"></div>
+<div class="gold-dot dot-bl6"></div>
+<div class="gold-dot dot-bl7"></div>
+
     <div class="container login-container">
         <div class="row justify-content-center animate__animated animate__fadeInDown">
             <div class="col-md-6">
                 <div class="card animate__animated animate__zoomIn">
-                    <div class="card-header text-center highlight">
+                    <div class="card-header text-center">
                         <h4>Login</h4>
                     </div>
                     <div class="card-body">
@@ -60,8 +97,6 @@ if (isset($_GET['message']) && $_GET['message'] == 'logged_out') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/login.js"></script>
-
-    
 </body>
 
 </html>

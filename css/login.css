@@ -1,106 +1,421 @@
-        .btn-custom {
-            background-color: #D19C97;
-            border-color: #D19C97;
-            color: #fff;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+/* VENDORCONNECT GHANA LOGO - Top Left Corner */
+.vc-logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
 
-        .btn-custom:hover {
-            background-color: #b77a7a;
-            border-color: #b77a7a;
-        }
+.vc-logo:hover {
+    transform: scale(1.05);
+}
 
-        .highlight {
-            color: #D19C97;
-            transition: color 0.3s;
-        }
+.vc-logo-ring {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #D4AF37 0%, #F4E4C1 50%, #C9A961 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 6px 20px rgba(212, 175, 55, 0.4),
+        inset 0 2px 8px rgba(255, 255, 255, 0.5);
+    position: relative;
+}
 
-        .highlight:hover {
-            color: #b77a7a;
-        }
+.vc-logo-ring::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle, #FFF 0%, #F4E4C1 100%);
+    border-radius: 50%;
+    box-shadow: inset 0 2px 4px rgba(201, 169, 97, 0.3);
+}
 
-        body {
-            /* Base background color */
-            background-color: #f8f9fa;
+.vc-logo-ring::after {
+    content: '💍';
+    position: absolute;
+    font-size: 22px;
+    z-index: 2;
+}
 
-            /* Gradient-like grid using repeating-linear-gradients */
-            background-image:
-                repeating-linear-gradient(0deg,
-                    #b77a7a,
-                    #b77a7a 1px,
-                    transparent 1px,
-                    transparent 20px),
-                repeating-linear-gradient(90deg,
-                    #b77a7a,
-                    #b77a7a 1px,
-                    transparent 1px,
-                    transparent 20px),
-                linear-gradient(rgba(183, 122, 122, 0.1),
-                    rgba(183, 122, 122, 0.1));
+.vc-logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
 
-            /* Blend the gradients for a subtle overlay effect */
-            background-blend-mode: overlay;
+.vc-logo-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c2c2c;
+    letter-spacing: 0.3px;
+}
 
-            /* Define the size of the grid */
-            background-size: 20px 20px;
+.vc-logo-sub {
+    font-size: 0.65rem;
+    color: #C9A961;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: -2px;
+}
 
-            /* Ensure the background covers the entire viewport */
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+/* BODY - White Marble Background EXACTLY like index */
+body {
+    background: 
+        radial-gradient(ellipse at 15% 25%, rgba(230, 230, 230, 0.4) 0%, transparent 40%),
+        radial-gradient(ellipse at 85% 75%, rgba(220, 220, 220, 0.35) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 50%, rgba(240, 240, 240, 0.3) 0%, transparent 50%),
+        linear-gradient(180deg, #f5f5f5 0%, #ffffff 20%, #fafafa 40%, #ffffff 60%, #f8f8f8 80%, #ffffff 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', Arial, sans-serif;
+    position: relative;
+}
 
-        .login-container {
-            margin-top: 100px;
-        }
+/* Subtle marble veins */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(135deg, transparent 45%, rgba(200, 200, 200, 0.03) 46%, rgba(200, 200, 200, 0.03) 54%, transparent 55%),
+        linear-gradient(225deg, transparent 45%, rgba(210, 210, 210, 0.02) 46%, rgba(210, 210, 210, 0.02) 54%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+}
 
-        .card {
-            border: none;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+/* EMERALD GREEN BOTANICALS - All 4 corners EXACTLY like index */
+.botanical-tl {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 380px;
+    height: 450px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 450"><defs><radialGradient id="leaf1"><stop offset="0%" style="stop-color:%231e4d2b;stop-opacity:0.85"/><stop offset="100%" style="stop-color:%232d5a3a;stop-opacity:0.75"/></radialGradient></defs><ellipse cx="140" cy="180" rx="90" ry="130" fill="url(%23leaf1)" transform="rotate(-22 140 180)"/><ellipse cx="90" cy="100" rx="60" ry="85" fill="%231a3d24" opacity="0.7" transform="rotate(-30 90 100)"/><ellipse cx="200" cy="250" rx="70" ry="95" fill="%232d5a3a" opacity="0.65" transform="rotate(-15 200 250)"/></svg>') no-repeat;
+    background-size: contain;
+    z-index: 1;
+    pointer-events: none;
+}
 
-        .card-header {
-            background-color: #D19C97;
-            color: #fff;
-        }
+.botanical-tr {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 360px;
+    height: 420px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 420"><defs><radialGradient id="leaf2"><stop offset="0%" style="stop-color:%231e4d2b;stop-opacity:0.82"/><stop offset="100%" style="stop-color:%232d5a3a;stop-opacity:0.72"/></radialGradient></defs><ellipse cx="240" cy="170" rx="85" ry="120" fill="url(%23leaf2)" transform="rotate(25 240 170)"/><ellipse cx="180" cy="250" rx="65" ry="90" fill="%231a3d24" opacity="0.68" transform="rotate(15 180 250)"/></svg>') no-repeat;
+    background-size: contain;
+    z-index: 1;
+    pointer-events: none;
+}
 
-        .animate-pulse-custom {
-            animation: pulse 2s infinite;
-        }
+.botanical-bl {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 470px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 470"><defs><radialGradient id="leaf3"><stop offset="0%" style="stop-color:%231e4d2b;stop-opacity:0.88"/><stop offset="100%" style="stop-color:%232d5a3a;stop-opacity:0.78"/></radialGradient></defs><ellipse cx="150" cy="320" rx="95" ry="135" fill="url(%23leaf3)" transform="rotate(-20 150 320)"/><ellipse cx="230" cy="240" rx="70" ry="100" fill="%231a3d24" opacity="0.72" transform="rotate(-8 230 240)"/><ellipse cx="90" cy="250" rx="60" ry="85" fill="%232d5a3a" opacity="0.65" transform="rotate(-25 90 250)"/></svg>') no-repeat;
+    background-size: contain;
+    z-index: 1;
+    pointer-events: none;
+}
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
+.botanical-br {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 380px;
+    height: 450px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 450"><defs><radialGradient id="leaf4"><stop offset="0%" style="stop-color:%231e4d2b;stop-opacity:0.85"/><stop offset="100%" style="stop-color:%232d5a3a;stop-opacity:0.75"/></radialGradient></defs><ellipse cx="250" cy="300" rx="88" ry="125" fill="url(%23leaf4)" transform="rotate(22 250 300)"/><ellipse cx="180" cy="230" rx="68" ry="95" fill="%231a3d24" opacity="0.7" transform="rotate(10 180 230)"/></svg>') no-repeat;
+    background-size: contain;
+    z-index: 1;
+    pointer-events: none;
+}
 
-            50% {
-                transform: scale(1.05);
-            }
+/* GOLD RECTANGULAR FRAMES - EXACTLY like index */
+.gold-frame-tr {
+    position: fixed;
+    top: 90px;
+    right: 70px;
+    width: 310px;
+    height: 215px;
+    border-top: 3px solid #C9A961;
+    border-right: 3px solid #C9A961;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(201, 169, 97, 0.2);
+}
 
-            100% {
-                transform: scale(1);
-            }
-        }
+.gold-frame-bl {
+    position: fixed;
+    bottom: 115px;
+    left: 70px;
+    width: 355px;
+    height: 245px;
+    border-bottom: 3px solid #C9A961;
+    border-left: 3px solid #C9A961;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(201, 169, 97, 0.2);
+}
 
-        /* Additional Styling for Enhanced Appearance */
-        .form-label i {
-            margin-left: 5px;
-            color: #b77a7a;
-        }
+/* SHINY GOLD DOTS - EXACTLY like index */
+.gold-dot {
+    position: fixed;
+    background: radial-gradient(circle at 30% 30%, #F4E4C1 0%, #D4AF37 50%, #C9A961 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(244, 228, 193, 0.9), 0 2px 6px rgba(201, 169, 97, 0.5);
+    animation: shimmer 2.8s ease-in-out infinite;
+    z-index: 3;
+    pointer-events: none;
+}
 
-        .alert-info {
-            animation: fadeIn 1s;
-        }
+@keyframes shimmer {
+    0%, 100% { 
+        opacity: 0.65; 
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(244, 228, 193, 0.9), 0 2px 6px rgba(201, 169, 97, 0.5);
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.2);
+        box-shadow: 0 0 18px rgba(244, 228, 193, 1), 0 3px 12px rgba(201, 169, 97, 0.7);
+    }
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+/* Top right cluster */
+.dot-tr1 { width: 5px; height: 5px; top: 205px; right: 215px; }
+.dot-tr2 { width: 3px; height: 3px; top: 218px; right: 228px; animation-delay: 0.4s; }
+.dot-tr3 { width: 6px; height: 6px; top: 232px; right: 218px; animation-delay: 0.8s; }
+.dot-tr4 { width: 4px; height: 4px; top: 213px; right: 242px; animation-delay: 1.2s; }
+.dot-tr5 { width: 5px; height: 5px; top: 246px; right: 233px; animation-delay: 1.6s; }
+.dot-tr6 { width: 3px; height: 3px; top: 198px; right: 252px; animation-delay: 2s; }
+.dot-tr7 { width: 4px; height: 4px; top: 226px; right: 253px; animation-delay: 2.4s; }
 
-            to {
-                opacity: 1;
-            }
-        }
+/* Bottom left cluster */
+.dot-bl1 { width: 5px; height: 5px; bottom: 255px; left: 215px; animation-delay: 0.3s; }
+.dot-bl2 { width: 4px; height: 4px; bottom: 268px; left: 228px; animation-delay: 0.7s; }
+.dot-bl3 { width: 6px; height: 6px; bottom: 238px; left: 238px; animation-delay: 1.1s; }
+.dot-bl4 { width: 3px; height: 3px; bottom: 283px; left: 218px; animation-delay: 1.5s; }
+.dot-bl5 { width: 5px; height: 5px; bottom: 248px; left: 258px; animation-delay: 1.9s; }
+.dot-bl6 { width: 4px; height: 4px; bottom: 273px; left: 248px; animation-delay: 2.3s; }
+.dot-bl7 { width: 3px; height: 3px; bottom: 258px; left: 273px; animation-delay: 2.7s; }
+
+.login-container {
+    margin-top: 100px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Card Styling */
+.card {
+    border: 1px solid rgba(201, 169, 97, 0.25);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 45px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #C9A961 0%, #D4AF37 100%);
+    color: #fff;
+    padding: 1.5rem;
+    border: none;
+}
+
+.card-header h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.card-body {
+    padding: 2.5rem;
+}
+
+.card-footer {
+    background: rgba(249, 249, 249, 0.5);
+    border-top: 1px solid rgba(201, 169, 97, 0.15);
+    padding: 1.2rem;
+}
+
+/* Form Labels */
+.form-label {
+    color: #2c2c2c;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-label i {
+    color: #C9A961;
+    margin-left: 5px;
+}
+
+/* Form Controls */
+.form-control {
+    border: 1.5px solid rgba(201, 169, 97, 0.3);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.form-control:focus {
+    border-color: #C9A961;
+    box-shadow: 0 0 0 0.25rem rgba(201, 169, 97, 0.15);
+    background: #fff;
+}
+
+/* Button Custom - Gold Theme */
+.btn-custom {
+    background: linear-gradient(135deg, #C9A961 0%, #D4AF37 100%);
+    border: none;
+    color: #fff;
+    padding: 0.9rem 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(201, 169, 97, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(135deg, #D4AF37 0%, #C9A961 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(201, 169, 97, 0.5);
+    color: #fff;
+}
+
+.btn-custom:active {
+    transform: translateY(0);
+}
+
+/* Highlight links */
+.highlight {
+    color: #C9A961;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.highlight:hover {
+    color: #D4AF37;
+    text-decoration: underline;
+}
+
+/* Button pulse animation */
+.animate-pulse-custom {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+/* Alert Styling */
+.alert-success {
+    background: linear-gradient(135deg, rgba(201, 169, 97, 0.15) 0%, rgba(212, 175, 55, 0.1) 100%);
+    border: 1px solid rgba(201, 169, 97, 0.3);
+    color: #2c2c2c;
+    border-radius: 10px;
+    animation: fadeIn 1s;
+}
+
+.alert-info {
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .vc-logo {
+        top: 15px;
+        left: 15px;
+        gap: 8px;
+    }
+    
+    .vc-logo-ring {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .vc-logo-ring::before {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .vc-logo-ring::after {
+        font-size: 18px;
+    }
+    
+    .vc-logo-main {
+        font-size: 1.1rem;
+    }
+    
+    .vc-logo-sub {
+        font-size: 0.55rem;
+        letter-spacing: 2px;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .botanical-tl, .botanical-tr, .botanical-bl, .botanical-br {
+        width: 250px;
+        height: 300px;
+    }
+    
+    .gold-frame-tr, .gold-frame-bl {
+        width: 180px;
+        height: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vc-logo-text {
+        display: none;
+    }
+    
+    .vc-logo-ring {
+        width: 50px;
+        height: 50px;
+    }
+
+    .card-header h4 {
+        font-size: 1.6rem;
+    }
+}
