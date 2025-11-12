@@ -114,7 +114,20 @@ function displayProductDetails(product) {
                             </div>
                         ` : ''}
                         
-                        <button class="btn btn-cart" onclick="addToCart(${product.product_id})">
+                        <div class="quantity-selector mb-3">
+                            <label class="form-label">Quantity:</label>
+                            <div class="quantity-controls d-inline-flex">
+                                <button class="qty-btn" onclick="updateQuantity(-1)">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                                <input type="number" class="qty-input" id="productQuantity" value="1" min="1" max="99">
+                                <button class="qty-btn" onclick="updateQuantity(1)">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-cart add-to-cart-btn" data-product-id="${product.product_id}" data-quantity-input="productQuantity">
                             <i class="bi bi-cart-plus me-2"></i>Add to Cart
                         </button>
                     </div>
@@ -179,11 +192,40 @@ function displayProductDetails(product) {
 }
 
 /**
- * Add to cart (placeholder)
+ * Update quantity
  */
-function addToCart(productId) {
-    alert('Added to cart (frontend only)');
+function updateQuantity(change) {
+    const input = document.getElementById('productQuantity');
+    let currentValue = parseInt(input.value) || 1;
+    let newValue = currentValue + change;
+    
+    // Keep within bounds
+    if (newValue < 1) newValue = 1;
+    if (newValue > 99) newValue = 99;
+    
+    input.value = newValue;
 }
+
+// Update the Add to Cart button click handler
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.add-to-cart-btn')) {
+        e.preventDefault();
+        const btn = e.target.closest('.add-to-cart-btn');
+        const productId = btn.dataset.productId;
+        const quantityInputId = btn.dataset.quantityInput;
+        
+        let quantity = 1;
+        if (quantityInputId) {
+            const input = document.getElementById(quantityInputId);
+            quantity = input ? parseInt(input.value) || 1 : 1;
+        }
+        
+        // Use the addToCart function from cart.js
+        if (typeof addToCart === 'function') {
+            addToCart(productId, quantity);
+        }
+    }
+});
 
 /**
  * Escape HTML to prevent XSS

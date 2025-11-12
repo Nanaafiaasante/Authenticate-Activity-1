@@ -16,6 +16,7 @@ $user_role = $_SESSION['user_role'] ?? 0;
 	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 	<link rel = "stylesheet" href = "css\main.css" >
 </head>
+<body>
 
 <!-- VENDORCONNECT GHANA LOGO -->
 <a href="index.php" class="vc-logo">
@@ -25,33 +26,33 @@ $user_role = $_SESSION['user_role'] ?? 0;
 		<div class="vc-logo-sub">GHANA</div>
 	</div>
 </a>
-	<!-- EMERALD GREEN BOTANICALS in all 4 corners -->
-	<div class="botanical-tl"></div>
-	<div class="botanical-tr"></div>
-	<div class="botanical-bl"></div>
-	<div class="botanical-br"></div>
 
-	<!-- GOLD RECTANGULAR FRAMES -->
-	<div class="gold-frame-tr"></div>
-	<div class="gold-frame-bl"></div>
+<!-- EMERALD GREEN BOTANICALS in all 4 corners -->
+<div class="botanical-tl"></div>
+<div class="botanical-tr"></div>
+<div class="botanical-bl"></div>
+<div class="botanical-br"></div>
 
-	<!-- SHINY GOLD DOTS scattered -->
-	<div class="gold-dot dot-tr1"></div>
-	<div class="gold-dot dot-tr2"></div>
-	<div class="gold-dot dot-tr3"></div>
-	<div class="gold-dot dot-tr4"></div>
-	<div class="gold-dot dot-tr5"></div>
-	<div class="gold-dot dot-tr6"></div>
-	<div class="gold-dot dot-tr7"></div>
-	
-	<div class="gold-dot dot-bl1"></div>
-	<div class="gold-dot dot-bl2"></div>
-	<div class="gold-dot dot-bl3"></div>
-	<div class="gold-dot dot-bl4"></div>
-	<div class="gold-dot dot-bl5"></div>
-	<div class="gold-dot dot-bl6"></div>
-	<div class="gold-dot dot-bl7"></div>
-<body>
+<!-- GOLD RECTANGULAR FRAMES -->
+<div class="gold-frame-tr"></div>
+<div class="gold-frame-bl"></div>
+
+<!-- SHINY GOLD DOTS scattered -->
+<div class="gold-dot dot-tr1"></div>
+<div class="gold-dot dot-tr2"></div>
+<div class="gold-dot dot-tr3"></div>
+<div class="gold-dot dot-tr4"></div>
+<div class="gold-dot dot-tr5"></div>
+<div class="gold-dot dot-tr6"></div>
+<div class="gold-dot dot-tr7"></div>
+
+<div class="gold-dot dot-bl1"></div>
+<div class="gold-dot dot-bl2"></div>
+<div class="gold-dot dot-bl3"></div>
+<div class="gold-dot dot-bl4"></div>
+<div class="gold-dot dot-bl5"></div>
+<div class="gold-dot dot-bl6"></div>
+<div class="gold-dot dot-bl7"></div>
 
 	<!-- Subtle accent dots -->
 	<div class="accent-dot"></div>

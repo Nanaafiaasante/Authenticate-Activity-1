@@ -30,98 +30,122 @@ $page_title = "Category Management";
     <title><?php echo $page_title; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/category.css">
 </head>
 <body>
-    <!-- Admin Header -->
-    <div class="admin-header">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h2 class="mb-0">
-                        <i class="bi bi-tags-fill me-2"></i>
-                        VendorConnect Ghana
-                    </h2>
-                </div>
-                <div class="col-md-6 text-end">
-                    <a href="brand.php" class="btn btn-outline-secondary me-2">
-                        <i class="bi bi-bag me-1"></i>Brands
-                    </a>
-                    <a href="../index.php" class="btn btn-outline-secondary me-2">
-                        <i class="bi bi-house me-1"></i>Home
-                    </a>
-                    <a href="../login/logout.php" class="btn btn-outline-danger">
-                        <i class="bi bi-box-arrow-right me-1"></i>Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <!-- Alert Messages -->
-        <div id="alertContainer"></div>
-
-        <!-- Add Category Card -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-plus-circle me-2"></i>
-                    Add New Category
-                </h5>
-            </div>
-            <div class="card-body">
-                <form id="addCategoryForm">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" id="categoryName" name="cat_name" 
-                                   placeholder="Enter category name" required maxlength="100">
-                        </div>
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-plus me-1"></i>Add Category
-                            </button>
-                        </div>
+    <!-- Header Section -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="header-container">
+                <!-- Left: Logo -->
+                <div class="header-left">
+                    <div class="vc-logo">
+                        <div class="logo-ring ring-outer"></div>
+                        <div class="logo-ring ring-middle"></div>
+                        <div class="logo-ring ring-inner"></div>
+                        <span class="logo-text">VC</span>
                     </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Categories List Card -->
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>
-                    Categories List
-                </h5>
-                <button class="btn btn-outline-primary btn-sm" onclick="loadCategories()">
-                    <i class="bi bi-arrow-clockwise me-1"></i>Refresh
-                </button>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Category Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="categoriesTableBody">
-                            <tr>
-                                <td colspan="3" class="text-center">
-                                    <div class="loading">
-                                        <i class="bi bi-hourglass-split me-2"></i>Loading categories...
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <span class="vc-brand">VendorConnect Ghana</span>
+                </div>
+                
+                <!-- Center: Page Title -->
+                <div class="header-center">
+                    <h1 class="page-title">
+                        <i class="bi bi-folder2-open me-2"></i>Category Management
+                    </h1>
+                </div>
+                
+                <!-- Right: Navigation -->
+                <div class="header-right">
+                    <a href="dashboard.php" class="header-nav-btn">
+                        <i class="bi bi-speedometer2"></i>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="brand.php" class="header-nav-btn">
+                        <i class="bi bi-tags"></i>
+                        <span class="nav-label">Brands</span>
+                    </a>
+                    <a href="../view/all_products.php" class="header-nav-btn">
+                        <i class="bi bi-grid"></i>
+                        <span class="nav-label">Store</span>
+                    </a>
+                    <a href="../login/logout.php" class="header-nav-btn logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="nav-label">Logout</span>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-fluid" style="max-width: 1200px;">
+            <!-- Alert Messages -->
+            <div id="alertContainer"></div>
+
+            <!-- Add Category Card -->
+            <div class="management-card mb-4">
+                <div class="management-card-header">
+                    <h3 class="management-card-title">
+                        <i class="bi bi-plus-circle me-2"></i>Add New Category
+                    </h3>
+                </div>
+                <div class="management-card-body">
+                    <form id="addCategoryForm">
+                        <div class="row align-items-end">
+                            <div class="col-md-9">
+                                <label for="categoryName" class="form-label">Category Name</label>
+                                <input type="text" class="form-control form-control-lg" id="categoryName" name="cat_name" 
+                                       placeholder="e.g., Catering, Decoration, Photography" required maxlength="100">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn-action btn-primary w-100">
+                                    <i class="bi bi-plus me-1"></i>Add Category
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Categories List Card -->
+            <div class="management-card">
+                <div class="management-card-header">
+                    <h3 class="management-card-title">
+                        <i class="bi bi-list-ul me-2"></i>All Categories
+                    </h3>
+                    <button class="btn-action btn-secondary" onclick="loadCategories()">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                    </button>
+                </div>
+                <div class="management-card-body">
+                    <div class="table-responsive">
+                        <table class="management-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">ID</th>
+                                    <th>Category Name</th>
+                                    <th style="width: 200px; text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesTableBody">
+                                <tr>
+                                    <td colspan="3" class="text-center">
+                                        <div class="loading-state">
+                                            <i class="bi bi-hourglass-split me-2"></i>Loading categories...
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <!-- Edit Category Modal -->
     <div class="modal fade" id="editCategoryModal" tabindex="-1">
