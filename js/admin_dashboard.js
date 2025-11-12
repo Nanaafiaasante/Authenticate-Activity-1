@@ -31,7 +31,7 @@ function handleSearch() {
 function loadUserProducts(page = 1, query = '') {
   currentPage = page;
   const container = document.getElementById('productsContainer');
-  container.innerHTML = `<div class="col-12 text-center py-5 text-muted">Loading...</div>`;
+  container.innerHTML = `<div class="text-center py-5 text-muted" style="grid-column: 1 / -1;">Loading...</div>`;
 
   const url = new URL('../actions/view_user_products_action.php', window.location.href);
   url.searchParams.set('page', page);
@@ -55,14 +55,14 @@ function loadUserProducts(page = 1, query = '') {
       renderPagination(data.total_pages || 1, data.page || 1);
     })
     .catch(err => {
-      container.innerHTML = `<div class="col-12"><div class="alert alert-danger">${err.message}</div></div>`;
+      container.innerHTML = `<div style="grid-column: 1 / -1;"><div class="alert alert-danger">${err.message}</div></div>`;
     });
 }
 
 function renderProducts(products) {
   const container = document.getElementById('productsContainer');
   if (!products.length) {
-    container.innerHTML = `<div class="col-12 text-center py-5 text-muted">No products yet. Click "Add Product" to create one.</div>`;
+    container.innerHTML = `<div class="text-center py-5 text-muted" style="grid-column: 1 / -1;">No products yet. Click "Add Product" to create one.</div>`;
     return;
   }
 
@@ -72,24 +72,22 @@ function renderProducts(products) {
     const price = Number(p.product_price || 0).toFixed(2);
 
     html += `
-      <div class="col-md-6 col-xl-4">
-        <div class="card h-100">
-          <img src="${img}" alt="${escapeHtml(p.product_title)}" class="product-image" onerror="this.src='../uploads/default-product.jpg'"/>
-          <div class="card-body d-flex flex-column">
-            <h6 class="mb-1">${escapeHtml(p.product_title)}</h6>
-            <div class="text-primary fw-bold mb-1">GHS ${price}</div>
-            <div class="mb-2">
-              <span class="badge badge-cat text-white me-1">${escapeHtml(p.cat_name)}</span>
-              <span class="badge badge-brand text-white">${escapeHtml(p.brand_name)}</span>
-            </div>
-            <div class="mt-auto d-flex gap-2">
-              <button class="btn btn-sm btn-outline" onclick="openEditModal(${p.product_id})">
-                <i class="bi bi-pencil"></i> Edit
-              </button>
-              <button class="btn btn-sm btn-outline text-danger border-danger" onclick="confirmDelete(${p.product_id}, '${escapeHtml(p.product_title).replace(/'/g, "\\'")}')">
-                <i class="bi bi-trash"></i> Delete
-              </button>
-            </div>
+      <div class="card">
+        <img src="${img}" alt="${escapeHtml(p.product_title)}" class="product-image" onerror="this.src='../uploads/default-product.jpg'"/>
+        <div class="card-body d-flex flex-column">
+          <h6 class="mb-1">${escapeHtml(p.product_title)}</h6>
+          <div class="text-primary fw-bold mb-1">GHS ${price}</div>
+          <div class="mb-2">
+            <span class="badge badge-cat text-white me-1">${escapeHtml(p.cat_name)}</span>
+            <span class="badge badge-brand text-white">${escapeHtml(p.brand_name)}</span>
+          </div>
+          <div class="mt-auto d-flex gap-2">
+            <button class="btn btn-sm btn-outline" onclick="openEditModal(${p.product_id})">
+              <i class="bi bi-pencil"></i> Edit
+            </button>
+            <button class="btn btn-sm btn-outline text-danger border-danger" onclick="confirmDelete(${p.product_id}, '${escapeHtml(p.product_title).replace(/'/g, "\\'")}')">
+              <i class="bi bi-trash"></i> Delete
+            </button>
           </div>
         </div>
       </div>
@@ -129,11 +127,11 @@ function loadCategories() {
         const cats = (d.data || d.categories || []);
         allCategories = cats; // Store globally for edit modal
         const display = cats.slice(0, 8);
-        if (!display.length) { ul.innerHTML = '<li class="list-group-item text-muted">No categories yet</li>'; return; }
-        ul.innerHTML = display.map(c => `<li class="list-group-item d-flex justify-content-between align-items-center">${escapeHtml(c.cat_name)}<span class="badge bg-light text-muted">#${c.cat_id}</span></li>`).join('');
+        if (!display.length) { ul.innerHTML = '<li class="sidebar-list-item loading">No categories yet</li>'; return; }
+        ul.innerHTML = display.map(c => `<li class="sidebar-list-item">${escapeHtml(c.cat_name)}<span class="badge">#${c.cat_id}</span></li>`).join('');
         populateEditCategoryDropdown();
       } else {
-        ul.innerHTML = `<li class="list-group-item text-danger">${d.message || 'Failed to load'}</li>`;
+        ul.innerHTML = `<li class="sidebar-list-item" style="color: #dc2626;">${d.message || 'Failed to load'}</li>`;
       }
     })
 }
@@ -147,11 +145,11 @@ function loadBrands() {
         const brands = (d.data || d.brands || []);
         allBrands = brands; // Store globally for edit modal
         const display = brands.slice(0, 8);
-        if (!display.length) { ul.innerHTML = '<li class="list-group-item text-muted">No brands yet</li>'; return; }
-        ul.innerHTML = display.map(b => `<li class="list-group-item d-flex justify-content-between align-items-center">${escapeHtml(b.brand_name)}<span class="badge bg-light text-muted">#${b.brand_id}</span></li>`).join('');
+        if (!display.length) { ul.innerHTML = '<li class="sidebar-list-item loading">No brands yet</li>'; return; }
+        ul.innerHTML = display.map(b => `<li class="sidebar-list-item">${escapeHtml(b.brand_name)}<span class="badge">#${b.brand_id}</span></li>`).join('');
         populateEditBrandDropdown();
       } else {
-        ul.innerHTML = `<li class="list-group-item text-danger">${d.message || 'Failed to load'}</li>`;
+        ul.innerHTML = `<li class="sidebar-list-item" style="color: #dc2626;">${d.message || 'Failed to load'}</li>`;
       }
     })
 }

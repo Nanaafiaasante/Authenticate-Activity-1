@@ -19,14 +19,6 @@ session_start();
 </head>
 <body>
     
-<!-- VENDORCONNECT GHANA LOGO -->
-<a href="../index.php" class="vc-logo">
-    <div class="vc-logo-ring"></div>
-    <div class="vc-logo-text">
-        <div class="vc-logo-main">VendorConnect</div>
-        <div class="vc-logo-sub">GHANA</div>
-    </div>
-</a>
 
 <!-- EMERALD GREEN BOTANICALS in all 4 corners -->
 <div class="botanical-tl"></div>
@@ -55,47 +47,61 @@ session_start();
 <div class="gold-dot dot-bl6"></div>
 <div class="gold-dot dot-bl7"></div>
 
-    <!-- Header -->
+        <!-- Header -->
     <div class="header-section">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-4">
-                    <h1 class="page-title">
-                        <i class="bi bi-shop me-2"></i>All Products
-                    </h1>
-                    <p class="page-subtitle">Discover the best wedding planning services</p>
-                </div>
-                <div class="col-md-5">
-                    <div class="header-search-wrapper">
-                        <input type="text" class="form-control header-search-input" id="searchInput" placeholder="Search products...">
-                        <button class="header-search-btn" type="button" id="searchBtn">
-                            <i class="bi bi-search"></i>
-                        </button>
+            <!-- Logo -->
+            <div class="header-left">
+                <a href="../index.php" class="vc-logo">
+                    <div class="vc-logo-ring"></div>
+                    <div class="vc-logo-text">
+                        <div class="vc-logo-main">VendorConnect</div>
+                        <div class="vc-logo-sub">GHANA</div>
                     </div>
+                </a>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="header-center">
+                <div class="header-search-wrapper">
+                    <input type="text" class="form-control header-search-input" id="searchInput" placeholder="Search products...">
+                    <button class="header-search-btn" type="button" id="searchBtn">
+                        <i class="bi bi-search"></i>
+                    </button>
                 </div>
-                <div class="col-md-3 text-end">
-                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1): ?>
-                        <a href="../admin/dashboard.php" class="btn-outline-custom me-2">
-                            <i class="bi bi-house me-1"></i>Home
-                        </a>
-                    <?php else: ?>
-                        <a href="../index.php" class="btn-outline-custom me-2">
-                            <i class="bi bi-house me-1"></i>Home
-                        </a>
-                    <?php endif; ?>
-                    <?php if (isset($_SESSION['customer_id'])): ?>
-                        <a href="../login/logout.php" class="btn-outline-custom">
-                            <i class="bi bi-box-arrow-right me-1"></i>Logout
-                        </a>
-                    <?php else: ?>
-                        <a href="../login/login.php" class="btn-outline-custom me-2">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                        </a>
-                        <a href="../login/register.php" class="btn-outline-custom">
-                            <i class="bi bi-person-plus me-1"></i>Register
-                        </a>
-                    <?php endif; ?>
-                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="header-right">
+                <a href="cart.php" class="btn-header-nav">
+                    <span class="cart-icon-wrapper">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-count-badge">0</span>
+                    </span>
+                    <span class="btn-nav-label">Cart</span>
+                </a>
+                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1): ?>
+                    <a href="../admin/dashboard.php" class="btn-header-nav">
+                        <i class="bi bi-grid"></i>
+                        <span class="btn-nav-label">My Products</span>
+                    </a>
+                <?php else: ?>
+                    <a href="../index.php" class="btn-header-nav">
+                        <i class="bi bi-house"></i>
+                        <span class="btn-nav-label">Home</span>
+                    </a>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['customer_id'])): ?>
+                    <a href="../login/logout.php" class="btn-header-nav btn-logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="btn-nav-label">Logout</span>
+                    </a>
+                <?php else: ?>
+                    <a href="../login/login.php" class="btn-header-nav">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span class="btn-nav-label">Login</span>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -177,7 +183,11 @@ session_start();
         </div>
     </div>
 
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/cart.js"></script>
     <script src="../js/all_products.js"></script>
 </body>
 </html>

@@ -9,6 +9,15 @@ let editBrandModal;
 let deleteBrandModal;
 let brands = [];
 
+/**
+ * Escape HTML to prevent XSS attacks
+ */
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 // Initialize modals when page loads
 document.addEventListener('DOMContentLoaded', function() {
     editBrandModal = new bootstrap.Modal(document.getElementById('editBrandModal'));
@@ -99,19 +108,19 @@ function displayBrands() {
     const container = document.getElementById('brandsContainer');
     
     if (brands.length === 0) {
-    container.innerHTML = '<div class="alert alert-info"><i class="bi bi-info-circle me-2"></i>No brands found. Add your first brand above.</div>';
+        container.innerHTML = '<div class="loading-state"><i class="bi bi-inbox me-2"></i>No brands found. Add your first brand above.</div>';
         return;
     }
     
     // Generate HTML
     let html = `
         <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-light">
+            <table class="management-table">
+                <thead>
                     <tr>
-                        <th width="10%">ID</th>
-                        <th width="60%">Brand Name</th>
-                        <th width="30%">Actions</th>
+                        <th style="width: 80px;">ID</th>
+                        <th>Brand Name</th>
+                        <th style="width: 200px; text-align: center;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -120,14 +129,14 @@ function displayBrands() {
     brands.forEach(brand => {
         html += `
             <tr>
-                <td>${brand.brand_id}</td>
-                <td>${brand.brand_name}</td>
-                <td>
-                    <button class="btn btn-warning btn-sm me-1" onclick="openEditModal(${brand.brand_id})" title="Edit">
-                        <i class="bi bi-pencil"></i>
+                <td><strong>#${brand.brand_id}</strong></td>
+                <td>${escapeHtml(brand.brand_name)}</td>
+                <td style="text-align: center;">
+                    <button class="table-action-btn btn-edit me-2" onclick="openEditModal(${brand.brand_id})" title="Edit">
+                        <i class="bi bi-pencil"></i> Edit
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${brand.brand_id})" title="Delete">
-                        <i class="bi bi-trash"></i>
+                    <button class="table-action-btn btn-delete" onclick="openDeleteModal(${brand.brand_id})" title="Delete">
+                        <i class="bi bi-trash"></i> Delete
                     </button>
                 </td>
             </tr>

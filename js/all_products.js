@@ -199,7 +199,7 @@ function displayProducts(products) {
                             <a href="single_product.php?id=${product.product_id}" class="btn-view-details">
                                 <i class="bi bi-eye me-1"></i>View Details
                             </a>
-                            <button class="btn-add-cart" onclick="addToCart(${product.product_id}, '${escapeHtml(product.product_title).replace(/'/g, "\\'")}')">
+                            <button class="btn-add-cart add-to-cart-btn" data-product-id="${product.product_id}" data-quantity="1">
                                 <i class="bi bi-cart-plus me-1"></i>Add to Cart
                             </button>
                         </div>
@@ -214,10 +214,53 @@ function displayProducts(products) {
 }
 
 /**
- * Add to cart placeholder function
+ * Add to cart function (actual implementation)
  */
-function addToCart(productId, productTitle) {
-    alert(`"${productTitle}" added to cart!\n(Cart functionality will be implemented later.)`);
+function addToCartFromProducts(productId, productTitle) {
+    // Show loading message
+    if (typeof showLoadingMessage === 'function') {
+        showLoadingMessage('Adding to cart...');
+    }
+    
+    fetch('../actions/add_to_cart_action.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            if (typeof showSuccessMessage === 'function') {
+                showSuccessMessage(data.message);
+            } else {
+                alert(data.message);
+            }
+            
+            // Update cart count if function exists
+            if (typeof updateCartCount === 'function') {
+                updateCartCount(data.cart_count);
+            }
+        } else {
+            if (typeof showErrorMessage === 'function') {
+                showErrorMessage(data.message);
+            } else {
+                alert(data.message);
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        if (typeof showErrorMessage === 'function') {
+            showErrorMessage('Failed to add item to cart. Please try again.');
+        } else {
+            alert('Failed to add item to cart. Please try again.');
+        }
+    });
 }
 
 /**

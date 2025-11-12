@@ -29,29 +29,55 @@ if ($product_id === 0) {
     <!-- Header -->
     <div class="header-section">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <a href="all_products.php" class="btn btn-back">
-                        <i class="bi bi-arrow-left me-1"></i>Back to Products
+            <!-- Logo -->
+            <div class="header-left">
+                <a href="../index.php" class="vc-logo">
+                    <div class="vc-logo-ring"></div>
+                    <div class="vc-logo-text">
+                        <div class="vc-logo-main">VendorConnect</div>
+                        <div class="vc-logo-sub">GHANA</div>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Center - Back Button -->
+            <div class="header-center">
+                <a href="all_products.php" class="btn btn-back">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Products
+                </a>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="header-right">
+                <a href="cart.php" class="btn-header-nav">
+                    <span class="cart-icon-wrapper">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-count-badge">0</span>
+                    </span>
+                    <span class="btn-nav-label">Cart</span>
+                </a>
+                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1): ?>
+                    <a href="../admin/dashboard.php" class="btn-header-nav">
+                        <i class="bi bi-grid"></i>
+                        <span class="btn-nav-label">Dashboard</span>
                     </a>
-                </div>
-                <div class="col-md-6 text-end">
-                    <a href="../index.php" class="btn btn-back me-2">
-                        <i class="bi bi-house me-1"></i>Home
+                <?php else: ?>
+                    <a href="../index.php" class="btn-header-nav">
+                        <i class="bi bi-house"></i>
+                        <span class="btn-nav-label">Home</span>
                     </a>
-                    <?php if (isset($_SESSION['customer_id'])): ?>
-                        <a href="../login/logout.php" class="btn btn-back">
-                            <i class="bi bi-box-arrow-right me-1"></i>Logout
-                        </a>
-                    <?php else: ?>
-                        <a href="../login/login.php" class="btn btn-back me-2">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                        </a>
-                        <a href="../login/register.php" class="btn btn-back">
-                            <i class="bi bi-person-plus me-1"></i>Register
-                        </a>
-                    <?php endif; ?>
-                </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['customer_id'])): ?>
+                    <a href="../login/logout.php" class="btn-header-nav btn-logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="btn-nav-label">Logout</span>
+                    </a>
+                <?php else: ?>
+                    <a href="../login/login.php" class="btn-header-nav">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span class="btn-nav-label">Login</span>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -67,10 +93,14 @@ if ($product_id === 0) {
         </div>
     </div>
 
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const productId = <?php echo $product_id; ?>;
     </script>
+    <script src="../js/cart.js"></script>
     <script src="../js/single_product.js"></script>
 </body>
 </html>

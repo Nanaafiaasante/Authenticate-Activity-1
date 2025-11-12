@@ -21,69 +21,110 @@ $customer_name = $_SESSION['customer_name'] ?? 'Admin';
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body>
-    <div class="header">
-        <div class="container">
-            <div class="d-flex align-items-center justify-content-between">
-                <div>
-                    <div class="page-title">My Products</div>
-                    <div class="small text-muted">Welcome, <?php echo htmlspecialchars($customer_name); ?></div>
-                </div>
-                <div>
-                    <a href="../view/all_products.php" class="btn btn-outline me-2"><i class="bi bi-grid"></i> All Products</a>
-                    <a href="../login/logout.php" class="btn btn-outline"><i class="bi bi-box-arrow-right"></i> Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container my-4">
-        <div class="row g-3 mb-3">
-            <div class="col-auto">
-                <a href="product.php" class="btn btn-gradient"><i class="bi bi-plus-lg me-1"></i> Add Product</a>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-outline" data-bs-toggle="modal" data-bs-target="#categoryModal"><i class="bi bi-folder-plus me-1"></i> New Category</button>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-outline" data-bs-toggle="modal" data-bs-target="#brandModal"><i class="bi bi-tags me-1"></i> New Brand</button>
-            </div>
-            <div class="col-auto ms-auto">
-                <div class="input-group">
-                    <input type="text" id="searchInput" class="form-control" placeholder="Search my products...">
-                    <button class="btn btn-gradient" id="searchBtn"><i class="bi bi-search"></i></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-8">
-                <div id="productsContainer" class="row g-3">
-                    <!-- User products will render here -->
-                </div>
-                <nav id="paginationContainer" class="mt-3" aria-label="My products pagination"></nav>
-            </div>
-            <div class="col-lg-4">
-                <div class="card mb-3">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <strong>Categories</strong>
-                        <a href="category.php" class="text-decoration-none">Manage</a>
+    <!-- Header Section -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="header-container">
+                <!-- Left: Logo -->
+                <div class="header-left">
+                <a href="../index.php" class="vc-logo">
+                    <div class="vc-logo-ring"></div>
+                    <div class="vc-logo-text">
+                        <div class="vc-logo-main">VendorConnect</div>
+                        <div class="vc-logo-sub">GHANA</div>
                     </div>
-                    <ul class="list-group list-group-flush" id="categoriesList">
-                        <li class="list-group-item text-muted">Loading...</li>
-                    </ul>
+                </a>
+            </div>
+                
+                <!-- Center: Page Title -->
+                <div class="header-center">
+                    <h1 class="page-title">Admin Dashboard</h1>
+                    <p class="page-subtitle">Welcome, <?php echo htmlspecialchars($customer_name); ?></p>
                 </div>
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <strong>Brands</strong>
-                        <a href="brand.php" class="text-decoration-none">Manage</a>
-                    </div>
-                    <ul class="list-group list-group-flush" id="brandsList">
-                        <li class="list-group-item text-muted">Loading...</li>
-                    </ul>
+                
+                <!-- Right: Navigation -->
+                <div class="header-right">
+                    <a href="../view/all_products.php" class="header-nav-btn">
+                        <i class="bi bi-grid"></i>
+                        <span class="nav-label">Store</span>
+                    </a>
+                    <a href="../login/logout.php" class="header-nav-btn logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="nav-label">Logout</span>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-fluid">
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <div class="action-buttons">
+                    <a href="product.php" class="btn-action btn-primary">
+                        <i class="bi bi-plus-lg me-1"></i> Add Product
+                    </a>
+                    <button class="btn-action btn-secondary" data-bs-toggle="modal" data-bs-target="#categoryModal">
+                        <i class="bi bi-folder-plus me-1"></i> New Category
+                    </button>
+                    <button class="btn-action btn-secondary" data-bs-toggle="modal" data-bs-target="#brandModal">
+                        <i class="bi bi-tags me-1"></i> New Brand
+                    </button>
+                </div>
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search my products...">
+                    </div>
+                    <button class="btn-action btn-primary" id="searchBtn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Products Section -->
+                <div class="products-section">
+                    <div id="productsContainer" class="products-grid">
+                        <!-- User products will render here -->
+                    </div>
+                    <nav id="paginationContainer" class="pagination-wrapper" aria-label="My products pagination"></nav>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Categories Card -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-card-header">
+                            <h3 class="sidebar-card-title">
+                                <i class="bi bi-folder2-open me-2"></i>Categories
+                            </h3>
+                            <a href="category.php" class="sidebar-link">Manage</a>
+                        </div>
+                        <ul class="sidebar-list" id="categoriesList">
+                            <li class="sidebar-list-item loading">Loading...</li>
+                        </ul>
+                    </div>
+
+                    <!-- Brands Card -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-card-header">
+                            <h3 class="sidebar-card-title">
+                                <i class="bi bi-tags me-2"></i>Brands
+                            </h3>
+                            <a href="brand.php" class="sidebar-link">Manage</a>
+                        </div>
+                        <ul class="sidebar-list" id="brandsList">
+                            <li class="sidebar-list-item loading">Loading...</li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
 
     <!-- Category Modal -->
     <div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">

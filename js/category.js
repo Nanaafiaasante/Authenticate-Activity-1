@@ -148,13 +148,13 @@ function displayCategories(categoriesList) {
     categoriesList.forEach(category => {
         html += `
             <tr>
-                <td>${category.cat_id}</td>
+                <td><strong>#${category.cat_id}</strong></td>
                 <td>${escapeHtml(category.cat_name)}</td>
-                <td>
-                    <button class="btn btn-warning btn-sm me-2" onclick="editCategory(${category.cat_id})">
+                <td style="text-align: center;">
+                    <button class="table-action-btn btn-edit me-2" onclick="editCategory(${category.cat_id})">
                         <i class="bi bi-pencil"></i> Edit
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteCategory(${category.cat_id})">
+                    <button class="table-action-btn btn-delete" onclick="deleteCategory(${category.cat_id})">
                         <i class="bi bi-trash"></i> Delete
                     </button>
                 </td>
@@ -172,9 +172,11 @@ function displayEmptyState() {
     const tableBody = document.getElementById('categoriesTableBody');
     tableBody.innerHTML = `
         <tr>
-            <td colspan="3" class="text-center text-muted py-4">
-                <i class="bi bi-inbox me-2"></i>
-                No categories found. Add your first category above.
+            <td colspan="3">
+                <div class="loading-state">
+                    <i class="bi bi-inbox me-2"></i>
+                    No categories found. Add your first category above.
+                </div>
             </td>
         </tr>
     `;
