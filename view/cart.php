@@ -18,6 +18,33 @@ session_start();
     <link rel="stylesheet" href="../css/cart.css">
 </head>
 <body>
+
+    <!-- EMERALD GREEN BOTANICALS in all 4 corners -->
+    <div class="botanical-tl"></div>
+    <div class="botanical-tr"></div>
+    <div class="botanical-bl"></div>
+    <div class="botanical-br"></div>
+
+    <!-- GOLD RECTANGULAR FRAMES -->
+    <div class="gold-frame-tr"></div>
+    <div class="gold-frame-bl"></div>
+
+    <!-- SHINY GOLD DOTS scattered -->
+    <div class="gold-dot dot-tr1"></div>
+    <div class="gold-dot dot-tr2"></div>
+    <div class="gold-dot dot-tr3"></div>
+    <div class="gold-dot dot-tr4"></div>
+    <div class="gold-dot dot-tr5"></div>
+    <div class="gold-dot dot-tr6"></div>
+    <div class="gold-dot dot-tr7"></div>
+
+    <div class="gold-dot dot-bl1"></div>
+    <div class="gold-dot dot-bl2"></div>
+    <div class="gold-dot dot-bl3"></div>
+    <div class="gold-dot dot-bl4"></div>
+    <div class="gold-dot dot-bl5"></div>
+    <div class="gold-dot dot-bl6"></div>
+    <div class="gold-dot dot-bl7"></div>
     
     <!-- Header -->
     <div class="header-section">
@@ -134,13 +161,6 @@ session_start();
                         <button class="btn-empty-cart" id="emptyCartBtn" onclick="emptyCart()">
                             <i class="bi bi-trash me-2"></i>Empty Cart
                         </button>
-                    </div>
-                    
-                    <div class="mt-4 p-3" style="background: rgba(201, 169, 97, 0.1); border-radius: 10px; border-left: 4px solid var(--gold-dark);">
-                        <p class="mb-0" style="font-size: 0.9rem; color: var(--text-medium);">
-                            <i class="bi bi-shield-check me-2" style="color: var(--gold-dark);"></i>
-                            <strong>Secure Checkout:</strong> Your payment information is protected with industry-standard encryption.
-                        </p>
                     </div>
                 </div>
             </div>

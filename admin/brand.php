@@ -43,36 +43,32 @@ $page_title = "Brand Management";
             <div class="header-container">
                 <!-- Left: Logo -->
                 <div class="header-left">
-                    <div class="vc-logo">
-                        <div class="logo-ring ring-outer"></div>
-                        <div class="logo-ring ring-middle"></div>
-                        <div class="logo-ring ring-inner"></div>
-                        <span class="logo-text">VC</span>
-                    </div>
-                    <span class="vc-brand">VendorConnect Ghana</span>
+                    <a href="../index.php" class="vc-logo">
+                        <div class="vc-logo-ring"></div>
+                        <div class="vc-logo-text">
+                            <div class="vc-logo-main">VendorConnect</div>
+                            <div class="vc-logo-sub">GHANA</div>
+                        </div>
+                    </a>
                 </div>
                 
                 <!-- Center: Page Title -->
                 <div class="header-center">
-                    <h1 class="page-title">
-                        <i class="bi bi-tags me-2"></i>Brand Management
-                    </h1>
+                    <h1 class="page-title">Brand Management</h1>
+                    <p class="page-subtitle">Manage service brands</p>
                 </div>
                 
                 <!-- Right: Navigation -->
                 <div class="header-right">
-                    <a href="dashboard.php" class="header-nav-btn">
-                        <i class="bi bi-speedometer2"></i>
+                                        <a href="dashboard.php" class="header-nav-btn">
+                        <i class="bi bi-grid"></i>
                         <span class="nav-label">Dashboard</span>
                     </a>
                     <a href="category.php" class="header-nav-btn">
                         <i class="bi bi-folder2-open"></i>
                         <span class="nav-label">Categories</span>
                     </a>
-                    <a href="../view/all_products.php" class="header-nav-btn">
-                        <i class="bi bi-grid"></i>
-                        <span class="nav-label">Store</span>
-                    </a>
+
                     <a href="../login/logout.php" class="header-nav-btn logout-btn">
                         <i class="bi bi-box-arrow-right"></i>
                         <span class="nav-label">Logout</span>
@@ -199,6 +195,22 @@ $page_title = "Brand Management";
         // Load brands when page loads
         document.addEventListener('DOMContentLoaded', function() {
             loadBrands();
+
+            // Enable Enter key for brand input
+            document.getElementById('brandName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('addBrandForm').dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // Enable Enter key in edit modal
+            document.getElementById('editBrandName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    updateBrand();
+                }
+            });
         });
     </script>
 </body>

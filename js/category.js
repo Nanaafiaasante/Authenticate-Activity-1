@@ -151,7 +151,7 @@ function displayCategories(categoriesList) {
                 <td><strong>#${category.cat_id}</strong></td>
                 <td>${escapeHtml(category.cat_name)}</td>
                 <td style="text-align: center;">
-                    <button class="table-action-btn btn-edit me-2" onclick="editCategory(${category.cat_id})">
+                    <button class="table-action-btn btn-edit" onclick="editCategory(${category.cat_id})">
                         <i class="bi bi-pencil"></i> Edit
                     </button>
                     <button class="table-action-btn btn-delete" onclick="deleteCategory(${category.cat_id})">

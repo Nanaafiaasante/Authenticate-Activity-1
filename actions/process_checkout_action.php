@@ -96,7 +96,10 @@ try {
     // Add order details for each cart item
     $order_details_success = true;
     foreach ($cart_items as $item) {
-        $result = add_order_details_ctr($order_id, $item['p_id'], $item['qty']);
+        // Get selected_items from cart if available
+        $selected_items = isset($item['selected_items']) ? $item['selected_items'] : null;
+        
+        $result = add_order_details_ctr($order_id, $item['p_id'], $item['qty'], $selected_items);
         if (!$result) {
             $order_details_success = false;
             break;

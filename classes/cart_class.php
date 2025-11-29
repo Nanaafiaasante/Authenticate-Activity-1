@@ -19,22 +19,26 @@ class Cart extends db_connection
      * @param int $quantity - The quantity to add
      * @return bool - True on success, false on failure
      */
-    public function add_to_cart($product_id, $customer_id, $ip_address, $quantity)
+    public function add_to_cart($product_id, $customer_id, $ip_address, $quantity, $selected_items = [])
     {
         // Escape inputs to prevent SQL injection
         $product_id = mysqli_real_escape_string($this->db_conn(), $product_id);
         $customer_id = $customer_id ? mysqli_real_escape_string($this->db_conn(), $customer_id) : 'NULL';
         $ip_address = mysqli_real_escape_string($this->db_conn(), $ip_address);
         $quantity = mysqli_real_escape_string($this->db_conn(), $quantity);
+        
+        // Convert selected items to JSON
+        $selected_items_json = !empty($selected_items) ? json_encode($selected_items) : null;
+        $selected_items_escaped = $selected_items_json ? "'" . mysqli_real_escape_string($this->db_conn(), $selected_items_json) . "'" : 'NULL';
 
         // Check if product already exists in cart
         $existing = $this->check_product_exists($product_id, $customer_id, $ip_address);
 
         if ($existing) {
-            // Update quantity instead of adding new entry
+            // Update quantity and selected items
             $new_quantity = $existing['qty'] + $quantity;
             $sql = "UPDATE cart 
-                    SET qty = $new_quantity 
+                    SET qty = $new_quantity, selected_items = $selected_items_escaped
                     WHERE p_id = $product_id 
                     AND ip_add = '$ip_address'";
             
@@ -45,8 +49,8 @@ class Cart extends db_connection
             }
         } else {
             // Insert new cart item
-            $sql = "INSERT INTO cart (p_id, c_id, ip_add, qty) 
-                    VALUES ($product_id, $customer_id, '$ip_address', $quantity)";
+            $sql = "INSERT INTO cart (p_id, c_id, ip_add, qty, selected_items) 
+                    VALUES ($product_id, $customer_id, '$ip_address', $quantity, $selected_items_escaped)";
         }
 
         return $this->db_write_query($sql);
@@ -154,7 +158,7 @@ class Cart extends db_connection
 
         $sql = "SELECT c.*, p.product_title, p.product_price, p.product_image, 
                        p.product_desc, p.product_cat, p.product_brand,
-                       cat.cat_name, b.brand_name,
+                       cat.cat_name, b.brand_name, c.selected_items,
                        (c.qty * p.product_price) as subtotal
                 FROM cart c
                 INNER JOIN products p ON c.p_id = p.product_id

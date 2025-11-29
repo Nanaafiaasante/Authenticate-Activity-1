@@ -26,6 +26,8 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1) {
 }
 
 require_once '../controllers/product_controller.php';
+require_once '../controllers/customer_controller.php';
+require_once '../classes/location_class.php';
 
 try {
     // Validate request method
@@ -55,9 +57,32 @@ try {
         exit();
     }
 
+    // Get vendor's location from customer table
+    $vendor = get_customer_by_id_ctr($_SESSION['customer_id']);
+    $latitude = null;
+    $longitude = null;
+    
+    if ($vendor) {
+        $latitude = $vendor['latitude'] ?? null;
+        $longitude = $vendor['longitude'] ?? null;
+        
+        // If vendor doesn't have coordinates yet, try to geocode their location
+        if (!$latitude || !$longitude) {
+            $city = $vendor['customer_city'] ?? '';
+            $country = $vendor['customer_country'] ?? '';
+            if ($city && $country) {
+                $coordinates = Location::geocodeLocation($city, $country);
+                if ($coordinates) {
+                    $latitude = $coordinates['latitude'];
+                    $longitude = $coordinates['longitude'];
+                }
+            }
+        }
+    }
+    
     $controller = new ProductController();
     
-    // Add product
+    // Add product with location
     $result = $controller->add_product_ctr([
         'product_cat' => $product_cat,
         'product_brand' => $product_brand,
@@ -66,7 +91,9 @@ try {
         'product_desc' => $product_desc,
         'product_image' => $product_image,
         'product_keywords' => $product_keywords,
-        'user_id' => $_SESSION['customer_id']
+        'user_id' => $_SESSION['customer_id'],
+        'latitude' => $latitude,
+        'longitude' => $longitude
     ]);
     
     echo json_encode($result);

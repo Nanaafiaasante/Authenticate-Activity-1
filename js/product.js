@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Package items functionality
+    initializePackageItems();
+
     // Image upload handling
     const uploadArea = document.getElementById('imageUploadArea');
     const imageInput = document.getElementById('productImageInput');
@@ -254,6 +257,12 @@ function populateBrandDropdown() {
  */
 function loadProducts() {
     const container = document.getElementById('productsContainer');
+    
+    // Only load if container exists (on dashboard, not on product.php)
+    if (!container) {
+        return;
+    }
+    
     container.innerHTML = '<div class="text-center"><div class="loading show"><i class="bi bi-hourglass-split me-2"></i>Loading services...</div></div>';
     
     fetch('../actions/fetch_product_action.php')
@@ -343,11 +352,17 @@ function addProduct() {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            showAlert('<i class="bi bi-check-circle me-2"></i>' + data.message, 'success');
-            form.reset();
-            document.getElementById('imagePreview').style.display = 'none';
-            currentImagePath = '';
-            loadProducts();
+            // Save package items if product was created successfully
+            const productId = data.product_id;
+            return savePackageItems(productId).then(packageResult => {
+                showAlert('<i class="bi bi-check-circle me-2"></i>' + data.message, 'success');
+                form.reset();
+                document.getElementById('imagePreview').style.display = 'none';
+                document.getElementById('packageItemsContainer').innerHTML = '';
+                packageItemsCount = 0;
+                currentImagePath = '';
+                loadProducts();
+            });
         } else {
             showAlert('<i class="bi bi-exclamation-triangle me-2"></i>' + data.message, 'danger');
         }
@@ -380,6 +395,9 @@ function loadProductForEdit(productId) {
     document.getElementById('productPrice').value = product.product_price;
     document.getElementById('productDescription').value = product.product_desc || '';
     document.getElementById('productKeywords').value = product.product_keywords || '';
+    
+    // Load package items for this product
+    loadPackageItems(productId);
     
     if (product.product_image) {
         document.getElementById('productImagePath').value = product.product_image;
@@ -417,8 +435,12 @@ function updateProduct() {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            showAlert('<i class="bi bi-check-circle me-2"></i>' + data.message, 'success');
-            loadProducts();
+            // Save package items after updating product
+            const productId = productData.product_id;
+            return savePackageItems(productId).then(packageResult => {
+                showAlert('<i class="bi bi-check-circle me-2"></i>' + data.message, 'success');
+                loadProducts();
+            });
         } else {
             showAlert('<i class="bi bi-exclamation-triangle me-2"></i>' + data.message, 'danger');
         }
@@ -464,4 +486,140 @@ function confirmDelete() {
         console.error('Error:', error);
         showAlert('An error occurred while deleting the service', 'danger');
     });
+}
+
+/**
+ * ===================================================================
+ * PACKAGE ITEMS FUNCTIONALITY
+ * ===================================================================
+ */
+
+let packageItemsCount = 0;
+
+/**
+ * Initialize package items functionality
+ */
+function initializePackageItems() {
+    const addBtn = document.getElementById('addPackageItemBtn');
+    if (addBtn) {
+        addBtn.addEventListener('click', addPackageItemField);
+    }
+    
+    // If editing, load existing package items
+    if (typeof EDIT_MODE !== 'undefined' && EDIT_MODE && typeof PRODUCT_ID !== 'undefined') {
+        loadPackageItems(PRODUCT_ID);
+    }
+}
+
+/**
+ * Add a new package item field
+ */
+function addPackageItemField(itemData = null) {
+    const container = document.getElementById('packageItemsContainer');
+    const itemId = itemData ? itemData.item_id : `new_${packageItemsCount++}`;
+    const itemName = itemData ? itemData.item_name : '';
+    const isOptional = itemData ? itemData.is_optional : 1;
+    
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'package-item-field mb-3';
+    itemDiv.dataset.itemId = itemId;
+    itemDiv.innerHTML = `
+        <div class="card">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-11">
+                        <label class="form-label small">Item Name *</label>
+                        <input type="text" class="form-control form-control-sm package-item-name" 
+                               placeholder="e.g., Food, Transportation, Venue, Decorations" 
+                               value="${itemName}" required>
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input package-item-optional" 
+                                   ${isOptional ? 'checked' : ''}>
+                            <label class="form-check-label small text-muted">
+                                Customer can deselect this item (optional)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-start">
+                        <button type="button" class="btn btn-danger btn-sm w-100" onclick="removePackageItem(this)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    container.appendChild(itemDiv);
+}
+
+/**
+ * Remove a package item field
+ */
+function removePackageItem(button) {
+    const itemDiv = button.closest('.package-item-field');
+    itemDiv.remove();
+}
+
+/**
+ * Get all package items from the form
+ */
+function getPackageItemsData() {
+    const items = [];
+    const itemFields = document.querySelectorAll('.package-item-field');
+    
+    itemFields.forEach(field => {
+        const name = field.querySelector('.package-item-name').value.trim();
+        const isOptional = field.querySelector('.package-item-optional').checked ? 1 : 0;
+        const itemId = field.dataset.itemId;
+        
+        if (name) {
+            items.push({
+                item_id: itemId.startsWith('new_') ? null : itemId,
+                item_name: name,
+                is_optional: isOptional
+            });
+        }
+    });
+    
+    return items;
+}
+
+/**
+ * Load package items for a product (edit mode)
+ */
+function loadPackageItems(productId) {
+    fetch(`../actions/get_package_items_action.php?product_id=${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success' && data.items && data.items.length > 0) {
+                data.items.forEach(item => {
+                    addPackageItemField(item);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error loading package items:', error);
+        });
+}
+
+/**
+ * Save package items for a product
+ */
+function savePackageItems(productId) {
+    const items = getPackageItemsData();
+    
+    if (items.length === 0) {
+        return Promise.resolve({ status: 'success' });
+    }
+    
+    const formData = new FormData();
+    formData.append('product_id', productId);
+    formData.append('items', JSON.stringify(items));
+    
+    return fetch('../actions/save_package_items_action.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json());
 }

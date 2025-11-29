@@ -73,22 +73,30 @@ session_start();
             
             <!-- Navigation -->
             <div class="header-right">
-                <a href="cart.php" class="btn-header-nav">
-                    <span class="cart-icon-wrapper">
-                        <i class="bi bi-cart3"></i>
-                        <span class="cart-count-badge">0</span>
-                    </span>
-                    <span class="btn-nav-label">Cart</span>
-                </a>
+                <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1): ?>
+                    <a href="cart.php" class="btn-header-nav">
+                        <span class="cart-icon-wrapper">
+                            <i class="bi bi-cart3"></i>
+                            <span class="cart-count-badge">0</span>
+                        </span>
+                        <span class="btn-nav-label">Cart</span>
+                    </a>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['customer_id']) && (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1)): ?>
+                    <a href="orders.php" class="btn-header-nav">
+                        <i class="bi bi-bag-check"></i>
+                        <span class="btn-nav-label">Orders</span>
+                    </a>
+                    
+                <?php endif; ?>
                 <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1): ?>
+                    <a href="../admin/consultations.php" class="btn-header-nav">
+                        <i class="bi bi-calendar-check"></i>
+                        <span class="btn-nav-label">Consultations</span>
+                    </a>
                     <a href="../admin/dashboard.php" class="btn-header-nav">
                         <i class="bi bi-grid"></i>
                         <span class="btn-nav-label">My Products</span>
-                    </a>
-                <?php else: ?>
-                    <a href="../index.php" class="btn-header-nav">
-                        <i class="bi bi-house"></i>
-                        <span class="btn-nav-label">Home</span>
                     </a>
                 <?php endif; ?>
                 <?php if (isset($_SESSION['customer_id'])): ?>
@@ -97,6 +105,10 @@ session_start();
                         <span class="btn-nav-label">Logout</span>
                     </a>
                 <?php else: ?>
+                    <a href="../login/select_role.php" class="btn-header-nav">
+                        <i class="bi bi-person-plus"></i>
+                        <span class="btn-nav-label">Sign Up</span>
+                    </a>
                     <a href="../login/login.php" class="btn-header-nav">
                         <i class="bi bi-box-arrow-in-right"></i>
                         <span class="btn-nav-label">Login</span>

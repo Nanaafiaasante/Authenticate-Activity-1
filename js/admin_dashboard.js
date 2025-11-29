@@ -126,9 +126,13 @@ function loadCategories() {
       if (d.status === 'success') {
         const cats = (d.data || d.categories || []);
         allCategories = cats; // Store globally for edit modal
-        const display = cats.slice(0, 8);
+        const display = cats.slice(0, 5);
         if (!display.length) { ul.innerHTML = '<li class="sidebar-list-item loading">No categories yet</li>'; return; }
-        ul.innerHTML = display.map(c => `<li class="sidebar-list-item">${escapeHtml(c.cat_name)}<span class="badge">#${c.cat_id}</span></li>`).join('');
+        let html = display.map(c => `<li class="sidebar-list-item">${escapeHtml(c.cat_name)}<span class="badge">#${c.cat_id}</span></li>`).join('');
+        if (cats.length > 5) {
+          html += `<li class="sidebar-list-item" style="text-align: center; padding: 0.75rem;"><a href="category.php" class="btn btn-sm" style="background: linear-gradient(135deg, var(--vc-green), var(--vc-green-light)); color: white; padding: 0.5rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 500;">View More</a></li>`;
+        }
+        ul.innerHTML = html;
         populateEditCategoryDropdown();
       } else {
         ul.innerHTML = `<li class="sidebar-list-item" style="color: #dc2626;">${d.message || 'Failed to load'}</li>`;
@@ -144,9 +148,13 @@ function loadBrands() {
       if (d.status === 'success') {
         const brands = (d.data || d.brands || []);
         allBrands = brands; // Store globally for edit modal
-        const display = brands.slice(0, 8);
+        const display = brands.slice(0, 5);
         if (!display.length) { ul.innerHTML = '<li class="sidebar-list-item loading">No brands yet</li>'; return; }
-        ul.innerHTML = display.map(b => `<li class="sidebar-list-item">${escapeHtml(b.brand_name)}<span class="badge">#${b.brand_id}</span></li>`).join('');
+        let html = display.map(b => `<li class="sidebar-list-item">${escapeHtml(b.brand_name)}<span class="badge">#${b.brand_id}</span></li>`).join('');
+        if (brands.length > 5) {
+          html += `<li class="sidebar-list-item" style="text-align: center; padding: 0.75rem;"><a href="brand.php" class="btn btn-sm" style="background: linear-gradient(135deg, var(--vc-green), var(--vc-green-light)); color: white; padding: 0.5rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 500;">View More</a></li>`;
+        }
+        ul.innerHTML = html;
         populateEditBrandDropdown();
       } else {
         ul.innerHTML = `<li class="sidebar-list-item" style="color: #dc2626;">${d.message || 'Failed to load'}</li>`;

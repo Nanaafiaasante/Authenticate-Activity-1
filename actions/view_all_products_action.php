@@ -4,9 +4,11 @@
  * Retrieves all products for customer view with optional pagination
  */
 
+session_start();
 header('Content-Type: application/json');
 
 require_once '../controllers/product_controller.php';
+require_once '../classes/location_class.php';
 
 try {
     $controller = new ProductController();
@@ -17,10 +19,15 @@ try {
     
     $offset = ($page - 1) * $per_page;
     
+    // Get user's location from session
+    $userLocation = Location::getUserLocation();
+    
     // Get all products
     $result = $controller->view_all_products_ctr([
         'limit' => $per_page,
-        'offset' => $offset
+        'offset' => $offset,
+        'user_latitude' => $userLocation['latitude'] ?? null,
+        'user_longitude' => $userLocation['longitude'] ?? null
     ]);
     
     // Add pagination info

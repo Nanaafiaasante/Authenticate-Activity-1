@@ -132,10 +132,10 @@ function displayBrands() {
                 <td><strong>#${brand.brand_id}</strong></td>
                 <td>${escapeHtml(brand.brand_name)}</td>
                 <td style="text-align: center;">
-                    <button class="table-action-btn btn-edit me-2" onclick="openEditModal(${brand.brand_id})" title="Edit">
+                    <button class="table-action-btn btn-edit" onclick="editBrand(${brand.brand_id})">
                         <i class="bi bi-pencil"></i> Edit
                     </button>
-                    <button class="table-action-btn btn-delete" onclick="openDeleteModal(${brand.brand_id})" title="Delete">
+                    <button class="table-action-btn btn-delete" onclick="deleteBrand(${brand.brand_id})">
                         <i class="bi bi-trash"></i> Delete
                     </button>
                 </td>

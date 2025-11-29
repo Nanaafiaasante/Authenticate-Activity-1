@@ -24,6 +24,10 @@ function register_customer_ctr($kwargs)
     $customer_city = $kwargs['customer_city'] ?? '';
     $customer_contact = $kwargs['customer_contact'] ?? '';
     $user_role = $kwargs['user_role'] ?? 2; // Default to customer role (2)
+    $subscription_tier = $kwargs['subscription_tier'] ?? null; // For planners only
+    $subscription_status = $kwargs['subscription_status'] ?? 'active';
+    $latitude = $kwargs['latitude'] ?? null;
+    $longitude = $kwargs['longitude'] ?? null;
     
     // Validate required fields
     if (empty($customer_name) || empty($customer_email) || empty($customer_pass) || 
@@ -39,7 +43,11 @@ function register_customer_ctr($kwargs)
         $customer_country, 
         $customer_city, 
         $customer_contact, 
-        $user_role
+        $user_role,
+        $subscription_tier,
+        $subscription_status,
+        $latitude,
+        $longitude
     );
     
     return $customer_id;

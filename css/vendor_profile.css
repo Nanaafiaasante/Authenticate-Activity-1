@@ -1,0 +1,523 @@
+/**
+ * Vendor Profile CSS
+ * VendorConnect Ghana - Vendor Profile Page Styling
+ */
+
+.profile-container {
+    padding: 2rem 0 4rem;
+    position: relative;
+    z-index: 10;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 3rem;
+}
+
+/* Profile Header Card */
+.profile-header-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.profile-cover {
+    height: 200px;
+    background: linear-gradient(135deg, #1e4d2b 0%, #2d5a3a 50%, #C9A961 100%);
+    position: relative;
+}
+
+.profile-header-content {
+    padding: 0 2rem 2rem;
+    position: relative;
+}
+
+.profile-picture-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: -75px auto 1.5rem;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: white;
+}
+
+.edit-profile-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: white;
+    border: 2px solid #1e4d2b;
+    color: #1e4d2b;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-profile-btn:hover {
+    background: #1e4d2b;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 77, 43, 0.3);
+}
+
+.profile-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e4d2b;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.profile-vendor-name {
+    font-size: 1.2rem;
+    color: #C9A961;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Rating Display */
+.rating-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.stars {
+    display: flex;
+    gap: 4px;
+}
+
+.star {
+    color: #ddd;
+    font-size: 1.5rem;
+}
+
+.star.filled {
+    color: #FFD700;
+}
+
+.star.half-filled {
+    position: relative;
+    color: #ddd;
+}
+
+.star.half-filled::before {
+    content: '\2605';
+    position: absolute;
+    color: #FFD700;
+    overflow: hidden;
+    width: 50%;
+}
+
+.rating-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c2c2c;
+}
+
+.rating-count {
+    font-size: 0.9rem;
+    color: #6b6b6b;
+}
+
+/* Profile Info Grid */
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(201, 169, 97, 0.05);
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #1e4d2b 0%, #2d5a3a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: #6b6b6b;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: #2c2c2c;
+    font-weight: 600;
+}
+
+/* Subscription Badge */
+.subscription-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.subscription-badge.basic {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+}
+
+.subscription-badge.premium {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+}
+
+.subscription-badge i {
+    font-size: 1.1rem;
+}
+
+/* About Section */
+.about-section {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e4d2b;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: #C9A961;
+}
+
+.about-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #4a4a4a;
+}
+
+.about-empty {
+    color: #999;
+    font-style: italic;
+}
+
+/* Products Section */
+.products-section {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.product-card-mini {
+    background: white;
+    border: 2px solid rgba(201, 169, 97, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.product-card-mini:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(30, 77, 43, 0.15);
+    border-color: #C9A961;
+}
+
+.product-card-mini img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.product-card-mini-body {
+    padding: 1rem;
+}
+
+.product-card-mini-title {
+    font-weight: 600;
+    color: #1e4d2b;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.product-card-mini-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #C9A961;
+}
+
+/* Edit Profile Modal */
+.profile-pic-upload {
+    text-align: center;
+}
+
+.preview-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid #C9A961;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #1e4d2b 0%, #2d5a3a 100%);
+    color: white;
+    border-radius: 0;
+}
+
+.modal-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #1e4d2b;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: #2d5a3a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 77, 43, 0.3);
+}
+
+.btn-secondary {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-cover {
+        height: 150px;
+    }
+    
+    .profile-picture-wrapper {
+        width: 120px;
+        height: 120px;
+        margin: -60px auto 1rem;
+    }
+    
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .profile-name {
+        font-size: 1.5rem;
+    }
+    
+    .profile-vendor-name {
+        font-size: 1rem;
+    }
+    
+    .edit-profile-btn {
+        position: static;
+        margin: 1rem auto;
+        width: fit-content;
+    }
+    
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Empty State */
+.empty-products {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #999;
+}
+
+.empty-products i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Back Button */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid #1e4d2b;
+    border-radius: 25px;
+    color: #1e4d2b;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background: #1e4d2b;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Reviews Section */
+.reviews-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.review-card {
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.review-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.review-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #C9A961;
+}
+
+.review-header-info {
+    flex: 1;
+}
+
+.review-customer-name {
+    font-weight: 700;
+    color: #1e4d2b;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.review-date {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.review-rating {
+    display: flex;
+    gap: 4px;
+}
+
+.review-rating .star {
+    font-size: 1.2rem;
+}
+
+.review-comment {
+    color: #555;
+    font-style: italic;
+    line-height: 1.6;
+    padding: 1rem;
+    background: white;
+    border-left: 4px solid #C9A961;
+    border-radius: 8px;
+}
+
+.empty-reviews {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #999;
+}
+
+.empty-reviews i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+    color: #C9A961;
+}
+
+.empty-reviews p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.empty-reviews small {
+    font-size: 0.9rem;
+}

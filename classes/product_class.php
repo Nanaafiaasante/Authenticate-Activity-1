@@ -29,11 +29,13 @@ class Product extends db_connection
         $product_image = mysqli_real_escape_string($conn, $data['product_image']);
         $product_keywords = mysqli_real_escape_string($conn, $data['product_keywords']);
         $user_id = mysqli_real_escape_string($conn, $data['user_id']);
+        $latitude = isset($data['latitude']) && is_numeric($data['latitude']) ? mysqli_real_escape_string($conn, $data['latitude']) : 'NULL';
+        $longitude = isset($data['longitude']) && is_numeric($data['longitude']) ? mysqli_real_escape_string($conn, $data['longitude']) : 'NULL';
 
         $sql = "INSERT INTO products (product_cat, product_brand, product_title, product_price, 
-                product_desc, product_image, product_keywords, user_id) 
+                product_desc, product_image, product_keywords, user_id, latitude, longitude) 
                 VALUES ('$product_cat', '$product_brand', '$product_title', '$product_price', 
-                '$product_desc', '$product_image', '$product_keywords', '$user_id')";
+                '$product_desc', '$product_image', '$product_keywords', '$user_id', $latitude, $longitude)";
         
         if ($this->db_write_query($sql)) {
             return $this->last_insert_id();
@@ -239,16 +241,45 @@ class Product extends db_connection
      * View all products (customer-facing)
      * @param int $limit - Optional limit for pagination
      * @param int $offset - Optional offset for pagination
+     * @param float $user_lat - Optional user latitude for distance calculation
+     * @param float $user_lon - Optional user longitude for distance calculation
      * @return array|false - Array of all products with vendor info or false on failure
      */
-    public function view_all_products($limit = null, $offset = null)
+    public function view_all_products($limit = null, $offset = null, $user_lat = null, $user_lon = null)
     {
-        $sql = "SELECT p.*, c.cat_name, b.brand_name, cu.customer_name as vendor_name
+        $distanceSQL = '';
+        $orderBy = 'p.created_at DESC';
+        
+        // If user location is provided, calculate distance and sort by it
+        if ($user_lat !== null && $user_lon !== null && is_numeric($user_lat) && is_numeric($user_lon)) {
+            $earthRadius = 6371; // kilometers
+            $distanceSQL = ", (
+                {$earthRadius} * ACOS(
+                    LEAST(1.0, GREATEST(-1.0,
+                        COS(RADIANS({$user_lat})) * 
+                        COS(RADIANS(p.latitude)) * 
+                        COS(RADIANS(p.longitude) - RADIANS({$user_lon})) + 
+                        SIN(RADIANS({$user_lat})) * 
+                        SIN(RADIANS(p.latitude))
+                    ))
+                )
+            ) as distance_km";
+            $orderBy = 'distance_km ASC, p.created_at DESC';
+        }
+        
+        $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_name as vendor_name,
+                       cu.customer_city as vendor_city,
+                       cu.latitude as vendor_latitude,
+                       cu.longitude as vendor_longitude,
+                       cu.address as vendor_address,
+                       cu.city_location as vendor_location
+                       {$distanceSQL}
                 FROM products p 
                 INNER JOIN categories c ON p.product_cat = c.cat_id 
                 INNER JOIN brands b ON p.product_brand = b.brand_id 
                 INNER JOIN customer cu ON p.user_id = cu.customer_id
-                ORDER BY p.created_at DESC";
+                ORDER BY {$orderBy}";
         
         if ($limit !== null && $offset !== null) {
             $limit = mysqli_real_escape_string($this->db_conn(), $limit);
@@ -270,7 +301,13 @@ class Product extends db_connection
     {
         $user_id = mysqli_real_escape_string($this->db_conn(), $user_id);
 
-        $sql = "SELECT p.*, c.cat_name, b.brand_name, cu.customer_name as vendor_name
+        $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_name as vendor_name,
+                       cu.customer_city as vendor_city,
+                       cu.latitude as vendor_latitude,
+                       cu.longitude as vendor_longitude,
+                       cu.address as vendor_address,
+                       cu.city_location as vendor_location
                 FROM products p 
                 INNER JOIN categories c ON p.product_cat = c.cat_id 
                 INNER JOIN brands b ON p.product_brand = b.brand_id 
@@ -298,7 +335,13 @@ class Product extends db_connection
     {
         $query = mysqli_real_escape_string($this->db_conn(), $query);
         
-        $sql = "SELECT p.*, c.cat_name, b.brand_name, cu.customer_name as vendor_name
+        $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_name as vendor_name,
+                       cu.customer_city as vendor_city,
+                       cu.latitude as vendor_latitude,
+                       cu.longitude as vendor_longitude,
+                       cu.address as vendor_address,
+                       cu.city_location as vendor_location
                 FROM products p 
                 INNER JOIN categories c ON p.product_cat = c.cat_id 
                 INNER JOIN brands b ON p.product_brand = b.brand_id 
@@ -328,7 +371,13 @@ class Product extends db_connection
     {
         $cat_id = mysqli_real_escape_string($this->db_conn(), $cat_id);
         
-        $sql = "SELECT p.*, c.cat_name, b.brand_name, cu.customer_name as vendor_name
+        $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_name as vendor_name,
+                       cu.customer_city as vendor_city,
+                       cu.latitude as vendor_latitude,
+                       cu.longitude as vendor_longitude,
+                       cu.address as vendor_address,
+                       cu.city_location as vendor_location
                 FROM products p 
                 INNER JOIN categories c ON p.product_cat = c.cat_id 
                 INNER JOIN brands b ON p.product_brand = b.brand_id 
@@ -356,7 +405,13 @@ class Product extends db_connection
     {
         $brand_id = mysqli_real_escape_string($this->db_conn(), $brand_id);
         
-        $sql = "SELECT p.*, c.cat_name, b.brand_name, cu.customer_name as vendor_name
+        $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_name as vendor_name,
+                       cu.customer_city as vendor_city,
+                       cu.latitude as vendor_latitude,
+                       cu.longitude as vendor_longitude,
+                       cu.address as vendor_address,
+                       cu.city_location as vendor_location
                 FROM products p 
                 INNER JOIN categories c ON p.product_cat = c.cat_id 
                 INNER JOIN brands b ON p.product_brand = b.brand_id 
@@ -386,7 +441,17 @@ class Product extends db_connection
                        cu.customer_name as vendor_name,
                        cu.customer_email as vendor_email,
                        cu.customer_contact as vendor_contact,
-                       cu.customer_city as vendor_city
+                       cu.customer_city as vendor_city,
+                       cu.customer_country as vendor_country,
+                       cu.vendor_name as vendor_business_name,
+                       cu.about as vendor_about,
+                       cu.profile_picture as vendor_profile_picture,
+                       cu.latitude as vendor_latitude,
+                       cu.longitude as vendor_longitude,
+                       cu.address as vendor_address,
+                       cu.city_location as vendor_location,
+                       (SELECT AVG(rating) FROM orders WHERE vendor_id = cu.customer_id AND rating IS NOT NULL) as vendor_rating,
+                       (SELECT COUNT(rating) FROM orders WHERE vendor_id = cu.customer_id AND rating IS NOT NULL) as vendor_review_count
                 FROM products p 
                 INNER JOIN categories c ON p.product_cat = c.cat_id 
                 INNER JOIN brands b ON p.product_brand = b.brand_id 
@@ -398,7 +463,7 @@ class Product extends db_connection
 
     /**
      * Filter products by multiple criteria (composite search)
-     * @param array $filters - Array of filters (category, brand, min_price, max_price, search)
+     * @param array $filters - Array of filters (category, brand, min_price, max_price, search, distance)
      * @param int $limit - Optional limit for pagination
      * @param int $offset - Optional offset for pagination
      * @return array|false - Array of filtered products or false on failure
@@ -406,6 +471,9 @@ class Product extends db_connection
     public function filter_products_composite($filters, $limit = null, $offset = null)
     {
         $where_clauses = [];
+        $distanceSQL = '';
+        $user_lat = $filters['user_latitude'] ?? null;
+        $user_lon = $filters['user_longitude'] ?? null;
         
         // Category filter
         if (!empty($filters['category'])) {
@@ -420,14 +488,14 @@ class Product extends db_connection
         }
         
         // Price range filter
-        if (isset($filters['min_price']) && $filters['min_price'] !== '') {
-            $min_price = mysqli_real_escape_string($this->db_conn(), $filters['min_price']);
-            $where_clauses[] = "p.product_price >= '$min_price'";
+        if (isset($filters['min_price']) && $filters['min_price'] !== '' && $filters['min_price'] !== null) {
+            $min_price = floatval($filters['min_price']);
+            $where_clauses[] = "p.product_price >= $min_price";
         }
         
-        if (isset($filters['max_price']) && $filters['max_price'] !== '') {
-            $max_price = mysqli_real_escape_string($this->db_conn(), $filters['max_price']);
-            $where_clauses[] = "p.product_price <= '$max_price'";
+        if (isset($filters['max_price']) && $filters['max_price'] !== '' && $filters['max_price'] !== null) {
+            $max_price = floatval($filters['max_price']);
+            $where_clauses[] = "p.product_price <= $max_price";
         }
         
         // Search filter
@@ -436,12 +504,54 @@ class Product extends db_connection
             $where_clauses[] = "(p.product_title LIKE '%$search%' OR p.product_desc LIKE '%$search%' OR p.product_keywords LIKE '%$search%')";
         }
         
+        // Distance calculation if user location provided
+        if ($user_lat !== null && $user_lon !== null && is_numeric($user_lat) && is_numeric($user_lon)) {
+            $earthRadius = 6371; // kilometers
+            $distanceSQL = ", (
+                {$earthRadius} * ACOS(
+                    LEAST(1.0, GREATEST(-1.0,
+                        COS(RADIANS({$user_lat})) * 
+                        COS(RADIANS(p.latitude)) * 
+                        COS(RADIANS(p.longitude) - RADIANS({$user_lon})) + 
+                        SIN(RADIANS({$user_lat})) * 
+                        SIN(RADIANS(p.latitude))
+                    ))
+                )
+            ) as distance_km";
+            
+            // Distance radius filter (e.g., within 50km)
+            if (!empty($filters['distance_radius'])) {
+                $radius = floatval($filters['distance_radius']);
+                $where_clauses[] = "(
+                    {$earthRadius} * ACOS(
+                        LEAST(1.0, GREATEST(-1.0,
+                            COS(RADIANS({$user_lat})) * 
+                            COS(RADIANS(p.latitude)) * 
+                            COS(RADIANS(p.longitude) - RADIANS({$user_lon})) + 
+                            SIN(RADIANS({$user_lat})) * 
+                            SIN(RADIANS(p.latitude))
+                        ))
+                    )
+                ) <= {$radius}";
+            }
+        }
+        
         // Build SQL
-        $sql = "SELECT p.*, c.cat_name, b.brand_name, cu.customer_name as vendor_name
+        $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_name as vendor_name,
+                       cu.customer_city as vendor_city,
+                       cu.latitude as vendor_latitude,
+                       cu.longitude as vendor_longitude,
+                       cu.address as vendor_address,
+                       cu.city_location as vendor_location
+                       {$distanceSQL}
                 FROM products p 
                 INNER JOIN categories c ON p.product_cat = c.cat_id 
                 INNER JOIN brands b ON p.product_brand = b.brand_id 
                 INNER JOIN customer cu ON p.user_id = cu.customer_id";
+        
+        // Always require products to have coordinates
+        $where_clauses[] = "p.latitude IS NOT NULL AND p.longitude IS NOT NULL";
         
         if (!empty($where_clauses)) {
             $sql .= " WHERE " . implode(' AND ', $where_clauses);
@@ -451,6 +561,11 @@ class Product extends db_connection
         $order_by = "p.created_at DESC"; // Default sort
         if (!empty($filters['sort'])) {
             switch ($filters['sort']) {
+                case 'distance':
+                    if ($distanceSQL !== '') {
+                        $order_by = "distance_km ASC";
+                    }
+                    break;
                 case 'price_low':
                     $order_by = "p.product_price ASC";
                     break;
@@ -465,6 +580,9 @@ class Product extends db_connection
                     $order_by = "p.created_at DESC";
                     break;
             }
+        } elseif ($distanceSQL !== '') {
+            // Default to distance sorting if location available
+            $order_by = "distance_km ASC, p.created_at DESC";
         }
         
         $sql .= " ORDER BY $order_by";
@@ -508,14 +626,14 @@ class Product extends db_connection
             $where_clauses[] = "p.product_brand = '$brand_id'";
         }
         
-        if (isset($filters['min_price']) && $filters['min_price'] !== '') {
-            $min_price = mysqli_real_escape_string($this->db_conn(), $filters['min_price']);
-            $where_clauses[] = "p.product_price >= '$min_price'";
+        if (isset($filters['min_price']) && $filters['min_price'] !== '' && $filters['min_price'] !== null) {
+            $min_price = floatval($filters['min_price']);
+            $where_clauses[] = "p.product_price >= $min_price";
         }
         
-        if (isset($filters['max_price']) && $filters['max_price'] !== '') {
-            $max_price = mysqli_real_escape_string($this->db_conn(), $filters['max_price']);
-            $where_clauses[] = "p.product_price <= '$max_price'";
+        if (isset($filters['max_price']) && $filters['max_price'] !== '' && $filters['max_price'] !== null) {
+            $max_price = floatval($filters['max_price']);
+            $where_clauses[] = "p.product_price <= $max_price";
         }
         
         if (!empty($filters['search'])) {

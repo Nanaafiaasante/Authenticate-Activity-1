@@ -112,158 +112,98 @@ function displayCheckoutSummary(items, total, totalRaw) {
 }
 
 /**
- * Set up payment modal
+ * Set up payment modal - Now directly redirects to Paystack
  */
 function setupPaymentModal() {
     const proceedBtn = document.getElementById('proceedToPaymentBtn');
-    const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
-    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
     
     if (proceedBtn) {
         proceedBtn.addEventListener('click', function() {
-            // Check if user is logged in
-            fetch('../actions/get_cart_action.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success' && data.cart_items && data.cart_items.length > 0) {
-                        showPaymentModal();
-                    } else {
-                        showCheckoutError('Your cart is empty');
-                        setTimeout(() => {
-                            window.location.href = 'cart.php';
-                        }, 2000);
-                    }
-                })
-                .catch(error => {
-                    showCheckoutError('Failed to verify cart');
-                });
-        });
-    }
-    
-    if (confirmPaymentBtn) {
-        confirmPaymentBtn.addEventListener('click', function() {
+            // Directly process checkout without showing modal
             processCheckout();
         });
     }
-    
-    if (cancelPaymentBtn) {
-        cancelPaymentBtn.addEventListener('click', function() {
-            hidePaymentModal();
-        });
-    }
 }
 
-/**
- * Show payment simulation modal
- */
-function showPaymentModal() {
-    const modal = document.getElementById('paymentModal');
-    if (!modal) return;
-    
-    // Get total from checkout summary
-    const summary = document.getElementById('checkoutSummary');
-    const total = summary ? summary.dataset.total : '0';
-    
-    // Update modal total
-    const modalTotal = document.getElementById('paymentModalTotal');
-    if (modalTotal) {
-        modalTotal.textContent = `GHS ${parseFloat(total).toFixed(2)}`;
-    }
-    
-    // Show modal using Bootstrap
-    const bsModal = new bootstrap.Modal(modal);
-    bsModal.show();
-}
+// Modal functions removed - now using direct Paystack redirect
 
 /**
- * Hide payment modal
- */
-function hidePaymentModal() {
-    const modal = document.getElementById('paymentModal');
-    if (!modal) return;
-    
-    const bsModal = bootstrap.Modal.getInstance(modal);
-    if (bsModal) {
-        bsModal.hide();
-    }
-}
-
-/**
- * Process checkout (after payment confirmation)
+ * Process checkout via Paystack - Direct redirect, no modal
  */
 function processCheckout() {
-    const confirmBtn = document.getElementById('confirmPaymentBtn');
-    const cancelBtn = document.getElementById('cancelPaymentBtn');
+    const proceedBtn = document.getElementById('proceedToPaymentBtn');
     
-    // Disable buttons and show loading
-    if (confirmBtn) {
-        confirmBtn.disabled = true;
-        confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
-    }
-    if (cancelBtn) {
-        cancelBtn.disabled = true;
+    // Disable button and show loading
+    if (proceedBtn) {
+        proceedBtn.disabled = true;
+        proceedBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Redirecting to Paystack...';
     }
     
-    fetch('../actions/process_checkout_action.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        // Check if response is ok
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        // Get the response as text first to see what we're dealing with
-        return response.text();
-    })
-    .then(text => {
-        // Try to parse as JSON
-        try {
-            const data = JSON.parse(text);
-            return data;
-        } catch (e) {
-            console.error('Invalid JSON response:', text);
-            throw new Error('Server returned invalid JSON. Please check the console for details.');
-        }
-    })
-    .then(data => {
-        if (data.status === 'success') {
-            // Hide payment modal
-            hidePaymentModal();
-            
-            // Show success and redirect
-            showOrderSuccess(data);
-        } else {
-            // Show error
-            hidePaymentModal();
-            showCheckoutError(data.message);
-            
-            // Re-enable buttons
-            if (confirmBtn) {
-                confirmBtn.disabled = false;
-                confirmBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Payment';
+    // Get cart total
+    const summary = document.getElementById('checkoutSummary');
+    const total = summary ? parseFloat(summary.dataset.total) : 0;
+    
+    // First, get cart data to retrieve customer email
+    fetch('../actions/get_cart_action.php')
+        .then(response => response.json())
+        .then(cartData => {
+            if (cartData.status !== 'success' || !cartData.customer_email) {
+                throw new Error('Could not retrieve customer email');
             }
-            if (cancelBtn) {
-                cancelBtn.disabled = false;
+            
+            const email = cartData.customer_email;
+            
+            // Initialize Paystack transaction
+            return fetch('../actions/paystack_init_transaction.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    amount: total,
+                    email: email
+                })
+            });
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Paystack init response:', data);
+            
+            if (data.status === 'success') {
+                // Get cart items for storage
+                return fetch('../actions/get_cart_action.php')
+                    .then(response => response.json())
+                    .then(cartData => {
+                        // Store checkout data for verification later
+                        localStorage.setItem('checkoutData', JSON.stringify({
+                            total: total,
+                            reference: data.reference,
+                            items: cartData.cart_items || []
+                        }));
+                        
+                        // Redirect directly to Paystack
+                        window.location.href = data.authorization_url;
+                    });
+            } else {
+                throw new Error(data.message || 'Failed to initialize payment');
             }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        hidePaymentModal();
-        showCheckoutError('An error occurred during checkout. Please try again.');
-        
-        // Re-enable buttons
-        if (confirmBtn) {
-            confirmBtn.disabled = false;
-            confirmBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Payment';
-        }
-        if (cancelBtn) {
-            cancelBtn.disabled = false;
-        }
-    });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            
+            // Use cart-style error message
+            if (typeof showErrorMessage === 'function') {
+                showErrorMessage(error.message || 'Failed to connect to payment gateway. Please try again.');
+            } else {
+                showCheckoutError(error.message || 'Failed to connect to payment gateway. Please try again.');
+            }
+            
+            // Re-enable button
+            if (proceedBtn) {
+                proceedBtn.disabled = false;
+                proceedBtn.innerHTML = '<i class="bi bi-shield-check me-2"></i>Pay with Paystack';
+            }
+        });
 }
 
 /**
@@ -307,11 +247,11 @@ function showOrderSuccess(orderData) {
             </div>
             
             <div class="success-actions">
-                <a href="all_products.php" class="btn btn-primary">
-                    <i class="bi bi-shop me-2"></i>Continue Shopping
-                </a>
-                <a href="../index.php" class="btn btn-outline-primary">
+                <a href="../index.php" class="btn btn-primary">
                     <i class="bi bi-house me-2"></i>Go to Home
+                </a>
+                <a href="orders.php" class="btn btn-outline-primary">
+                    <i class="bi bi-bag-check me-2"></i>View My Orders
                 </a>
             </div>
             

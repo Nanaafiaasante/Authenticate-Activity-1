@@ -36,41 +36,108 @@ $product_id = $edit_mode ? $_GET['edit'] : null;
     <title><?php echo $page_title; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/product.css">
 </head>
 <body>
-    <!-- Admin Header -->
-    <div class="admin-header">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h2 class="mb-0">
-                        <i class="bi bi-briefcase-fill me-2"></i>
-                        VendorConnect Ghana
-                    </h2>
-                    <small class="text-muted">Planner Service Profile Management</small>
+    <!-- Header Section -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="header-container">
+                <!-- Left: Logo -->
+                <div class="header-left">
+                    <a href="../index.php" class="vc-logo">
+                        <div class="vc-logo-ring"></div>
+                        <div class="vc-logo-text">
+                            <div class="vc-logo-main">VendorConnect</div>
+                            <div class="vc-logo-sub">GHANA</div>
+                        </div>
+                    </a>
                 </div>
-                <div class="col-md-6 text-end">
-                    <a href="category.php" class="btn btn-outline-secondary me-2">
-                        <i class="bi bi-tags me-1"></i>Categories
+                
+                <!-- Center: Page Title -->
+                <div class="header-center">
+                    <h1 class="page-title"><?php echo $edit_mode ? 'Edit Service Profile' : 'Add Service Profile'; ?></h1>
+                    <p class="page-subtitle">Manage your wedding service offerings</p>
+                </div>
+                
+                <!-- Right: Navigation -->
+                <div class="header-right">
+                    <a href="category.php" class="header-nav-btn">
+                        <i class="bi bi-tags"></i>
+                        <span class="nav-label">Categories</span>
                     </a>
-                    <a href="brand.php" class="btn btn-outline-secondary me-2">
-                        <i class="bi bi-bag me-1"></i>Brands
+                    <a href="brand.php" class="header-nav-btn">
+                        <i class="bi bi-bag"></i>
+                        <span class="nav-label">Brands</span>
                     </a>
-                    <a href="dashboard.php" class="btn btn-outline-secondary me-2">
-                        <i class="bi bi-house me-1"></i>Home
+                    <a href="dashboard.php" class="header-nav-btn">
+                        <i class="bi bi-grid"></i>
+                        <span class="nav-label">Dashboard</span>
                     </a>
-                    <a href="../login/logout.php" class="btn btn-outline-danger">
-                        <i class="bi bi-box-arrow-right me-1"></i>Logout
+                    <a href="../login/logout.php" class="header-nav-btn logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="nav-label">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subscription Payment Banner -->
+    <?php if (isset($_SESSION['subscription_status']) && $_SESSION['subscription_status'] === 'pending'): ?>
+    <div class="subscription-banner" style="background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border-left: 4px solid #f59e0b; padding: 20px; margin: 20px auto; max-width: 1400px; border-radius: 12px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-exclamation-triangle" style="font-size: 24px; color: #f59e0b;"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1" style="color: #92400e; font-weight: 600;">
+                            <i class="bi bi-lock-fill me-2"></i>Subscription Payment Required
+                        </h5>
+                        <p class="mb-0" style="color: #78350f; font-size: 0.95rem;">
+                            Complete your payment to unlock all features and start adding products. 
+                            Selected Plan: <strong><?php echo ucfirst($_SESSION['subscription_tier'] ?? 'N/A'); ?></strong>
+                            (GHS <?php echo $_SESSION['subscription_tier'] === 'premium' ? '199' : '99'; ?>/month)
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <a href="subscription_payment.php?tier=<?php echo $_SESSION['subscription_tier']; ?>&amount=<?php echo $_SESSION['subscription_tier'] === 'premium' ? '199' : '99'; ?>" 
+                       class="btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="bi bi-credit-card"></i>
+                        Complete Payment Now
                     </a>
                 </div>
             </div>
         </div>
     </div>
+    <?php endif; ?>
 
-    <div class="container">
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-fluid">
         <!-- Alert Messages -->
         <div id="alertContainer"></div>
+        
+        <?php if (isset($_SESSION['subscription_status']) && $_SESSION['subscription_status'] === 'pending'): ?>
+        <!-- Blocked Overlay -->
+        <div class="payment-required-overlay" style="background: rgba(255, 255, 255, 0.95); position: absolute; top: 100px; left: 0; right: 0; bottom: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;">
+            <div class="text-center p-5">
+                <i class="bi bi-lock" style="font-size: 80px; color: #f59e0b; margin-bottom: 20px;"></i>
+                <h3 style="color: #92400e; margin-bottom: 15px;">Payment Required</h3>
+                <p style="color: #78350f; font-size: 1.1rem; margin-bottom: 25px;">
+                    Please complete your subscription payment to add products
+                </p>
+                <a href="subscription_payment.php?tier=<?php echo $_SESSION['subscription_tier']; ?>&amount=<?php echo $_SESSION['subscription_tier'] === 'premium' ? '199' : '99'; ?>" 
+                   class="btn btn-warning btn-lg">
+                    <i class="bi bi-credit-card me-2"></i>Pay Now
+                </a>
+            </div>
+        </div>
+        <?php endif; ?>
 
         <!-- Add/Edit Product Form -->
         <div class="card">
@@ -127,9 +194,25 @@ $product_id = $edit_mode ? $_GET['edit'] : null;
                     <div class="mb-3">
                         <label for="productDescription" class="form-label">Service Description</label>
                         <textarea class="form-control" id="productDescription" name="product_desc" 
-                                  rows="4" maxlength="500" 
+                                  rows="6" maxlength="1000" 
                                   placeholder="Describe what's included in this service package, your experience, and what makes your offering unique..."></textarea>
-                        <small class="text-muted">Describe your service (max 500 characters)</small>
+                        <small class="text-muted">Describe your service (max 1000 characters)</small>
+                    </div>
+
+                    <!-- Package Items Section -->
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <i class="bi bi-check2-square me-2"></i>Package Includes
+                        </label>
+                        <p class="text-muted small mb-3">Add items that come with your package (e.g., Food, Transportation, Venue, Decorations).</p>
+                        
+                        <div id="packageItemsContainer">
+                            <!-- Package items will be added here dynamically -->
+                        </div>
+                        
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="addPackageItemBtn">
+                            <i class="bi bi-plus-circle me-2"></i>Add Package Item
+                        </button>
                     </div>
 
                     <div class="mb-3">
@@ -154,8 +237,8 @@ $product_id = $edit_mode ? $_GET['edit'] : null;
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <a href="product.php" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left me-1"></i>Back to List
+                        <a href="dashboard.php" class="btn btn-secondary">
+                            <i class="bi bi-grid me-1"></i>My Products
                         </a>
                         <button type="submit" class="btn btn-<?php echo $edit_mode ? 'warning' : 'primary'; ?>">
                             <i class="bi bi-<?php echo $edit_mode ? 'check' : 'plus'; ?> me-1"></i>
@@ -165,29 +248,8 @@ $product_id = $edit_mode ? $_GET['edit'] : null;
                 </form>
             </div>
         </div>
-
-        <!-- Existing Products List -->
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>
-                    Your Service Profiles
-                </h5>
-                <button class="btn btn-outline-primary btn-sm" onclick="loadProducts()">
-                    <i class="bi bi-arrow-clockwise me-1"></i>Refresh
-                </button>
-            </div>
-            <div class="card-body">
-                <div id="productsContainer">
-                    <div class="text-center">
-                        <div class="loading show">
-                            <i class="bi bi-hourglass-split me-2"></i>Loading services...
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
+    </main>
 
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteProductModal" tabindex="-1">
@@ -234,6 +296,14 @@ $product_id = $edit_mode ? $_GET['edit'] : null;
                     loadProductForEdit(PRODUCT_ID);
                 }, 500);
             }
+
+            // Enable Enter key to submit product form
+            document.getElementById('productForm').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    this.dispatchEvent(new Event('submit'));
+                }
+            });
         });
     </script>
 </body>
