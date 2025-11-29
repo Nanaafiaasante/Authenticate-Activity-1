@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 //for header redirection
 ob_start();
@@ -7,6 +9,11 @@ ob_start();
 //function to check for login
 function check_login() {
     return isset($_SESSION['customer_id']) && !empty($_SESSION['customer_id']);
+}
+
+//alias function for check_login
+function is_logged_in() {
+    return check_login();
 }
 
 //function to get user ID

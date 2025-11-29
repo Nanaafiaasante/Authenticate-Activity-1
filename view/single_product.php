@@ -40,11 +40,15 @@ if ($product_id === 0) {
                 </a>
             </div>
             
-            <!-- Center - Back Button -->
+            <!-- Center - Breadcrumb -->
             <div class="header-center">
-                <a href="all_products.php" class="btn btn-back">
-                    <i class="bi bi-arrow-left me-2"></i>Back to Products
-                </a>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
+                        <li class="breadcrumb-item"><a href="all_products.php">Products</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" id="productBreadcrumb">Product</li>
+                    </ol>
+                </nav>
             </div>
             
             <!-- Navigation -->
@@ -82,13 +86,37 @@ if ($product_id === 0) {
         </div>
     </div>
 
-    <div class="container">
-        <div id="productContainer">
-            <div class="loading-spinner">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <div class="container">
+            <div id="productContainer">
+                <div class="loading-spinner">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3">Loading product details...</p>
                 </div>
-                <p class="mt-3">Loading product details...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor Profile Modal -->
+    <div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="vendorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, #1e4d2b 0%, #2d5a3a 100%); color: white; border: none;">
+                    <h5 class="modal-title" id="vendorModalLabel">
+                        <i class="bi bi-shop me-2"></i>Vendor Profile
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0" id="vendorModalBody">
+                    <div class="text-center p-4">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

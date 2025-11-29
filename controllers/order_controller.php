@@ -23,17 +23,18 @@ function create_order_ctr($customer_id, $invoice_no, $order_date, $order_status 
 }
 
 /**
- * Add order details
+ * Add order details controller
  * 
  * @param int $order_id - The order ID
  * @param int $product_id - The product ID
  * @param int $quantity - The quantity
+ * @param string $selected_items - JSON string of selected package items (optional)
  * @return bool - True on success, false on failure
  */
-function add_order_details_ctr($order_id, $product_id, $quantity)
+function add_order_details_ctr($order_id, $product_id, $quantity, $selected_items = null)
 {
     $order = new Order();
-    return $order->add_order_details($order_id, $product_id, $quantity);
+    return $order->add_order_details($order_id, $product_id, $quantity, $selected_items);
 }
 
 /**
@@ -42,14 +43,18 @@ function add_order_details_ctr($order_id, $product_id, $quantity)
  * @param float $amount - The payment amount
  * @param int $customer_id - The customer ID
  * @param int $order_id - The order ID
- * @param string $currency - The currency (default: 'GHS')
  * @param string $payment_date - The payment date
+ * @param string $currency - The currency (default: 'GHS')
+ * @param string $payment_method - Payment method (optional)
+ * @param string $transaction_ref - Transaction reference (optional)
+ * @param string $authorization_code - Authorization code (optional)
+ * @param string $payment_channel - Payment channel (optional)
  * @return int|false - Payment ID on success, false on failure
  */
-function record_payment_ctr($amount, $customer_id, $order_id, $currency = 'GHS', $payment_date)
+function record_payment_ctr($amount, $customer_id, $order_id, $payment_date, $currency = 'GHS', $payment_method = null, $transaction_ref = null, $authorization_code = null, $payment_channel = null)
 {
     $order = new Order();
-    return $order->record_payment($amount, $customer_id, $order_id, $currency, $payment_date);
+    return $order->record_payment($amount, $customer_id, $order_id, $payment_date, $currency, $payment_method, $transaction_ref, $authorization_code, $payment_channel);
 }
 
 /**

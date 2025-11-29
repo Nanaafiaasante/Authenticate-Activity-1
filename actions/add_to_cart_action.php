@@ -7,6 +7,15 @@
 session_start();
 header('Content-Type: application/json');
 
+// Check if user is a planner (planners cannot add to cart)
+if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Event planners cannot purchase items. Only customers can add items to cart.'
+    ]);
+    exit;
+}
+
 // Include the cart controller
 require_once(__DIR__ . '/../controllers/cart_controller.php');
 
@@ -39,6 +48,7 @@ if (!isset($data['product_id']) || !isset($data['quantity'])) {
 
 $product_id = intval($data['product_id']);
 $quantity = intval($data['quantity']);
+$selected_items = isset($data['selected_items']) ? $data['selected_items'] : [];
 
 // Validate quantity
 if ($quantity <= 0) {
@@ -56,8 +66,8 @@ $customer_id = isset($_SESSION['customer_id']) ? intval($_SESSION['customer_id']
 $ip_address = $_SERVER['REMOTE_ADDR'];
 
 try {
-    // Add item to cart
-    $result = add_to_cart_ctr($product_id, $customer_id, $ip_address, $quantity);
+    // Add item to cart with selected package items
+    $result = add_to_cart_ctr($product_id, $customer_id, $ip_address, $quantity, $selected_items);
 
     if ($result) {
         // Get updated cart count

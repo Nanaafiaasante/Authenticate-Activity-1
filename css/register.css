@@ -217,7 +217,8 @@ body::before {
 .dot-bl7 { width: 3px; height: 3px; bottom: 258px; left: 273px; animation-delay: 2.7s; }
 
 .register-container {
-    margin-top: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     position: relative;
     z-index: 10;
 }
@@ -225,30 +226,35 @@ body::before {
 /* Card Styling */
 .card {
     border: 1px solid rgba(201, 169, 97, 0.25);
-    border-radius: 20px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 12px 45px rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
 }
 
 .card-header {
-    background: linear-gradient(135deg, #C9A961 0%, #D4AF37 100%);
+    background: linear-gradient(135deg, #1e4d2b 0%, #2d7040 100%);
     color: #fff;
-    padding: 1.5rem;
+    padding: 1.25rem;
     border: none;
 }
 
-.card-header h4 {
+.card-header h1 {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin: 0;
     letter-spacing: 0.5px;
 }
 
+.card-header .text-muted {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 0.9rem;
+}
+
 .card-body {
-    padding: 2.5rem;
+    padding: 1.5rem;
 }
 
 .card-footer {
@@ -261,34 +267,59 @@ body::before {
 .form-label {
     color: #2c2c2c;
     font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    margin-bottom: 0.4rem;
 }
 
 .form-label i {
-    color: #C9A961;
-    margin-left: 5px;
+    color: #1e4d2b;
+    margin-right: 5px;
 }
 
 /* Form Controls */
 .form-control {
     border: 1.5px solid rgba(201, 169, 97, 0.3);
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    padding: 0.65rem 0.875rem;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
 }
 
 .form-control:focus {
-    border-color: #C9A961;
-    box-shadow: 0 0 0 0.25rem rgba(201, 169, 97, 0.15);
+    border-color: #1e4d2b;
+    box-shadow: 0 0 0 0.2rem rgba(30, 77, 43, 0.15);
     background: #fff;
 }
 
 .form-text {
     color: #666;
-    font-size: 0.8rem;
-    margin-top: 0.3rem;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* Location Input Wrapper */
+.location-input-wrapper {
+    background: rgba(245, 241, 232, 0.5);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(201, 169, 97, 0.2);
+}
+
+.location-input-wrapper .btn-outline-secondary {
+    border-color: #1e4d2b;
+    color: #1e4d2b;
+    margin-top: 0.5rem;
+}
+
+.location-input-wrapper .btn-outline-secondary:hover {
+    background-color: #1e4d2b;
+    color: white;
+}
+
+#location-status {
+    font-size: 0.75rem;
+    color: #666;
 }
 
 /* Button Custom - Gold Theme */

@@ -32,12 +32,16 @@ try {
     $cart_total = get_cart_total_ctr($customer_id, $ip_address);
 
     if ($cart_items !== false) {
+        // Get customer email from session
+        $customer_email = isset($_SESSION['customer_email']) ? $_SESSION['customer_email'] : null;
+        
         echo json_encode([
             'status' => 'success',
             'cart_items' => $cart_items ? $cart_items : [],
             'cart_count' => $cart_count,
             'cart_total' => number_format($cart_total, 2),
-            'cart_total_raw' => $cart_total
+            'cart_total_raw' => $cart_total,
+            'customer_email' => $customer_email
         ]);
     } else {
         echo json_encode([

@@ -71,3 +71,18 @@
         .loading.show {
             display: inline-block;
         }
+        
+        /* Action Button Spacing */
+        .management-table td {
+            white-space: nowrap;
+        }
+        
+        .table-action-btn {
+            display: inline-flex !important;
+            margin: 0 0.5rem !important;
+            vertical-align: middle;
+        }
+        
+        .table-action-btn.btn-edit {
+            margin-right: 1.5rem !important;
+        }

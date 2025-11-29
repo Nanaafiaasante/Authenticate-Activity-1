@@ -41,16 +41,19 @@ class Order extends db_connection
      * @param int $order_id - The order ID
      * @param int $product_id - The product ID
      * @param int $quantity - The quantity ordered
+     * @param string $selected_items - JSON string of selected package items (optional)
      * @return bool - True on success, false on failure
      */
-    public function add_order_details($order_id, $product_id, $quantity)
+    public function add_order_details($order_id, $product_id, $quantity, $selected_items = null)
     {
         $order_id = mysqli_real_escape_string($this->db_conn(), $order_id);
         $product_id = mysqli_real_escape_string($this->db_conn(), $product_id);
         $quantity = mysqli_real_escape_string($this->db_conn(), $quantity);
+        
+        $selected_items_escaped = $selected_items ? "'" . mysqli_real_escape_string($this->db_conn(), $selected_items) . "'" : 'NULL';
 
-        $sql = "INSERT INTO orderdetails (order_id, product_id, qty) 
-                VALUES ($order_id, $product_id, $quantity)";
+        $sql = "INSERT INTO orderdetails (order_id, product_id, qty, selected_items) 
+                VALUES ($order_id, $product_id, $quantity, $selected_items_escaped)";
 
         return $this->db_write_query($sql);
     }
@@ -63,18 +66,54 @@ class Order extends db_connection
      * @param int $order_id - The order ID
      * @param string $currency - The currency code (default: 'GHS')
      * @param string $payment_date - The payment date (YYYY-MM-DD format)
+     * @param string $payment_method - Payment method (optional: 'paystack', 'cash', etc.)
+     * @param string $transaction_ref - Transaction reference (optional)
+     * @param string $authorization_code - Authorization code from gateway (optional)
+     * @param string $payment_channel - Payment channel (optional: 'card', 'mobile_money', etc.)
      * @return int|false - The payment ID on success, false on failure
      */
-    public function record_payment($amount, $customer_id, $order_id, $currency = 'GHS', $payment_date)
+    public function record_payment($amount, $customer_id, $order_id, $payment_date, $currency = 'GHS', $payment_method = null, $transaction_ref = null, $authorization_code = null, $payment_channel = null)
     {
-        $amount = mysqli_real_escape_string($this->db_conn(), $amount);
-        $customer_id = mysqli_real_escape_string($this->db_conn(), $customer_id);
-        $order_id = mysqli_real_escape_string($this->db_conn(), $order_id);
-        $currency = mysqli_real_escape_string($this->db_conn(), $currency);
-        $payment_date = mysqli_real_escape_string($this->db_conn(), $payment_date);
+        $conn = $this->db_conn();
+        
+        $amount = mysqli_real_escape_string($conn, $amount);
+        $customer_id = mysqli_real_escape_string($conn, $customer_id);
+        $order_id = mysqli_real_escape_string($conn, $order_id);
+        $currency = mysqli_real_escape_string($conn, $currency);
+        $payment_date = mysqli_real_escape_string($conn, $payment_date);
 
-        $sql = "INSERT INTO payment (amt, customer_id, order_id, currency, payment_date) 
-                VALUES ($amount, $customer_id, $order_id, '$currency', '$payment_date')";
+        // Build SQL with optional fields
+        $columns = "(amt, customer_id, order_id, currency, payment_date";
+        $values = "($amount, $customer_id, $order_id, '$currency', '$payment_date'";
+        
+        if ($payment_method !== null) {
+            $payment_method = mysqli_real_escape_string($conn, $payment_method);
+            $columns .= ", payment_method";
+            $values .= ", '$payment_method'";
+        }
+        
+        if ($transaction_ref !== null) {
+            $transaction_ref = mysqli_real_escape_string($conn, $transaction_ref);
+            $columns .= ", transaction_ref";
+            $values .= ", '$transaction_ref'";
+        }
+        
+        if ($authorization_code !== null) {
+            $authorization_code = mysqli_real_escape_string($conn, $authorization_code);
+            $columns .= ", authorization_code";
+            $values .= ", '$authorization_code'";
+        }
+        
+        if ($payment_channel !== null) {
+            $payment_channel = mysqli_real_escape_string($conn, $payment_channel);
+            $columns .= ", payment_channel";
+            $values .= ", '$payment_channel'";
+        }
+        
+        $columns .= ")";
+        $values .= ")";
+
+        $sql = "INSERT INTO payment $columns VALUES $values";
 
         if ($this->db_write_query($sql)) {
             return $this->last_insert_id();
@@ -112,10 +151,15 @@ class Order extends db_connection
     {
         $order_id = mysqli_real_escape_string($this->db_conn(), $order_id);
 
-        $sql = "SELECT od.*, p.product_title, p.product_price, p.product_image,
+        $sql = "SELECT od.*, p.product_title, p.product_price, p.product_image, p.product_cat, p.user_id,
+                       c.customer_id as vendor_customer_id, c.customer_name as vendor_name,
+                       c.customer_email as vendor_email, c.customer_contact as vendor_contact,
+                       o.rating, o.review_comment, od.selected_items,
                        (od.qty * p.product_price) as item_total
                 FROM orderdetails od
                 INNER JOIN products p ON od.product_id = p.product_id
+                INNER JOIN orders o ON od.order_id = o.order_id
+                LEFT JOIN customer c ON p.user_id = c.customer_id
                 WHERE od.order_id = $order_id";
 
         return $this->db_fetch_all($sql);

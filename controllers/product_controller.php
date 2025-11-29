@@ -458,15 +458,17 @@ class ProductController
 
     /**
      * View all products controller (customer-facing)
-     * @param array $kwargs - Array containing optional limit and offset for pagination
+     * @param array $kwargs - Array containing optional limit, offset, and user location for pagination and distance sorting
      * @return array - Response array with status and data
      */
     public function view_all_products_ctr($kwargs)
     {
         $limit = $kwargs['limit'] ?? null;
         $offset = $kwargs['offset'] ?? null;
+        $user_lat = $kwargs['user_latitude'] ?? null;
+        $user_lon = $kwargs['user_longitude'] ?? null;
         
-        $products = $this->product->view_all_products($limit, $offset);
+        $products = $this->product->view_all_products($limit, $offset, $user_lat, $user_lon);
         $total_count = $this->product->get_total_product_count();
         
         if ($products !== false) {
@@ -474,7 +476,8 @@ class ProductController
                 'status' => 'success',
                 'data' => $products,
                 'count' => count($products),
-                'total' => $total_count
+                'total' => $total_count,
+                'sorted_by_distance' => ($user_lat !== null && $user_lon !== null)
             ];
         } else {
             return [

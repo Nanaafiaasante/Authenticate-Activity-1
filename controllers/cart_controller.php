@@ -16,10 +16,10 @@ require_once(__DIR__ . '/../classes/cart_class.php');
  * @param int $quantity - The quantity to add
  * @return bool - True on success, false on failure
  */
-function add_to_cart_ctr($product_id, $customer_id, $ip_address, $quantity)
+function add_to_cart_ctr($product_id, $customer_id, $ip_address, $quantity, $selected_items = [])
 {
     $cart = new Cart();
-    return $cart->add_to_cart($product_id, $customer_id, $ip_address, $quantity);
+    return $cart->add_to_cart($product_id, $customer_id, $ip_address, $quantity, $selected_items);
 }
 
 /**

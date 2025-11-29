@@ -50,6 +50,8 @@ if ($customer) {
     $_SESSION['customer_name'] = $customer['customer_name'];
     $_SESSION['customer_email'] = $customer['customer_email'];
     $_SESSION['user_role'] = $customer['user_role'];
+    $_SESSION['subscription_tier'] = $customer['subscription_tier'] ?? null;
+    $_SESSION['subscription_status'] = $customer['subscription_status'] ?? null;
     
     $response['status'] = 'success';
     $response['message'] = 'Login successful! Welcome back, ' . $customer['customer_name'];

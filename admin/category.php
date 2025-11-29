@@ -41,35 +41,30 @@ $page_title = "Category Management";
             <div class="header-container">
                 <!-- Left: Logo -->
                 <div class="header-left">
-                    <div class="vc-logo">
-                        <div class="logo-ring ring-outer"></div>
-                        <div class="logo-ring ring-middle"></div>
-                        <div class="logo-ring ring-inner"></div>
-                        <span class="logo-text">VC</span>
-                    </div>
-                    <span class="vc-brand">VendorConnect Ghana</span>
+                    <a href="../index.php" class="vc-logo">
+                        <div class="vc-logo-ring"></div>
+                        <div class="vc-logo-text">
+                            <div class="vc-logo-main">VendorConnect</div>
+                            <div class="vc-logo-sub">GHANA</div>
+                        </div>
+                    </a>
                 </div>
                 
                 <!-- Center: Page Title -->
                 <div class="header-center">
-                    <h1 class="page-title">
-                        <i class="bi bi-folder2-open me-2"></i>Category Management
-                    </h1>
+                    <h1 class="page-title">Category Management</h1>
+                    <p class="page-subtitle">Manage service categories</p>
                 </div>
                 
                 <!-- Right: Navigation -->
                 <div class="header-right">
                     <a href="dashboard.php" class="header-nav-btn">
-                        <i class="bi bi-speedometer2"></i>
+                        <i class="bi bi-grid"></i>
                         <span class="nav-label">Dashboard</span>
                     </a>
                     <a href="brand.php" class="header-nav-btn">
                         <i class="bi bi-tags"></i>
                         <span class="nav-label">Brands</span>
-                    </a>
-                    <a href="../view/all_products.php" class="header-nav-btn">
-                        <i class="bi bi-grid"></i>
-                        <span class="nav-label">Store</span>
                     </a>
                     <a href="../login/logout.php" class="header-nav-btn logout-btn">
                         <i class="bi bi-box-arrow-right"></i>
@@ -210,6 +205,22 @@ $page_title = "Category Management";
         // Load categories when page loads
         document.addEventListener('DOMContentLoaded', function() {
             loadCategories();
+
+            // Enable Enter key for category input
+            document.getElementById('categoryName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('addCategoryForm').dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // Enable Enter key in edit modal
+            document.getElementById('editCategoryName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    updateCategory();
+                }
+            });
         });
     </script>
 </body>

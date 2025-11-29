@@ -4,12 +4,17 @@
  * Filters products by category, brand, or composite criteria
  */
 
+session_start();
 header('Content-Type: application/json');
 
 require_once '../controllers/product_controller.php';
+require_once '../classes/location_class.php';
 
 try {
     $controller = new ProductController();
+    
+    // Get user's location from session
+    $userLocation = Location::getUserLocation();
     
     // Get filter type
     $filter_type = isset($_GET['type']) ? $_GET['type'] : '';
@@ -69,6 +74,16 @@ try {
             
             if (isset($_GET['sort']) && !empty($_GET['sort'])) {
                 $filters['sort'] = trim($_GET['sort']);
+            }
+            
+            if (isset($_GET['distance_radius']) && $_GET['distance_radius'] !== '') {
+                $filters['distance_radius'] = (float)$_GET['distance_radius'];
+            }
+            
+            // Add user location for distance calculations
+            if ($userLocation) {
+                $filters['user_latitude'] = $userLocation['latitude'];
+                $filters['user_longitude'] = $userLocation['longitude'];
             }
             
             $result = $controller->filter_composite_ctr([

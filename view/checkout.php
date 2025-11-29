@@ -88,16 +88,11 @@ if (!isset($_SESSION['customer_id'])) {
             <div class="step-line"></div>
             <li class="progress-step active">
                 <div class="step-circle">2</div>
-                <span class="step-label">Review Order</span>
+                <span class="step-label">Review & Pay</span>
             </li>
             <div class="step-line"></div>
             <li class="progress-step">
                 <div class="step-circle">3</div>
-                <span class="step-label">Payment</span>
-            </li>
-            <div class="step-line"></div>
-            <li class="progress-step">
-                <div class="step-circle">4</div>
                 <span class="step-label">Confirmation</span>
             </li>
         </ul>
@@ -139,60 +134,26 @@ if (!isset($_SESSION['customer_id'])) {
                     <!-- Payment Section -->
                     <div class="payment-section">
                         <button class="btn-proceed-payment" id="proceedToPaymentBtn" disabled>
-                            <i class="bi bi-wallet2 me-2"></i>Proceed to Payment
+                            <i class="bi bi-shield-check me-2"></i>Pay with Paystack
                         </button>
                         
-                        <p class="text-muted mt-3">
+                        <p class="text-muted mt-3 text-center">
                             <i class="bi bi-shield-lock me-2"></i>
-                            All transactions are secure and encrypted
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Payment Simulation Modal -->
-    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="paymentModalLabel">
-                        <i class="bi bi-credit-card-2-front me-2"></i> Simulate Payment Confirmation
-                    </h5>
-                </div>
-                <div class="modal-body">
-                    <div class="payment-info">
-                        <i class="bi bi-cash-coin" style="font-size: 3rem; color: var(--gold-dark);"></i>
-                        <div class="payment-amount">
-                            <span class="currency">GHS</span>
-                            <span id="paymentModalTotal">0.00</span>
-                        </div>
-                        
-                        <p class="mt-4" style="color: var(--text-dark); font-size: 1.1rem;">
-                            Please confirm your payment to complete this order.
+                            Secure payment powered by <strong>Paystack</strong>
                         </p>
                         
-                        <div class="payment-methods mt-3 p-3" style="background: rgba(201, 169, 97, 0.1); border-radius: 10px;">
-                            <p class="mb-2" style="font-size: 0.95rem; color: var(--text-medium);">
+                        <div class="payment-methods mt-3 p-3 text-center" style="background: rgba(201, 169, 97, 0.05); border-radius: 10px;">
+                            <p class="mb-2" style="font-size: 0.9rem; color: var(--text-medium);">
                                 <i class="bi bi-credit-card me-2"></i>Accepted payment methods:
                             </p>
                             <div class="d-flex gap-2 justify-content-center flex-wrap">
-                                <span class="badge bg-primary">Mobile Money</span>
-                                <span class="badge bg-success">Credit Card</span>
-                                <span class="badge bg-info">Debit Card</span>
-                                <span class="badge bg-warning text-dark">Bank Transfer</span>
+                                <span class="badge" style="background: #1e4d2b;">Mobile Money</span>
+                                <span class="badge" style="background: #2d5a3a;">Credit Card</span>
+                                <span class="badge" style="background: #3a7049;">Debit Card</span>
+                                <span class="badge" style="background: #C9A961; color: #2c2c2c;">Bank Transfer</span>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-cancel-payment" id="cancelPaymentBtn">
-                        <i class="bi bi-x-circle me-2"></i>Cancel
-                    </button>
-                    <button type="button" class="btn btn-confirm-payment" id="confirmPaymentBtn">
-                        <i class="bi bi-check-circle me-2"></i>Confirm Payment
-                    </button>
                 </div>
             </div>
         </div>

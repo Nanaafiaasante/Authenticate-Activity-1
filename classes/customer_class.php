@@ -17,6 +17,8 @@ class Customer extends db_connection
     private $customer_contact;
     private $customer_image;
     private $user_role;
+    private $subscription_tier;
+    private $subscription_status;
 
     public function __construct($customer_id = null)
     {
@@ -54,6 +56,8 @@ class Customer extends db_connection
             $this->customer_contact = $result['customer_contact'];
             $this->customer_image = $result['customer_image'];
             $this->user_role = $result['user_role'];
+            $this->subscription_tier = $result['subscription_tier'];
+            $this->subscription_status = $result['subscription_status'];
             return true;
         }
         return false;
@@ -62,7 +66,7 @@ class Customer extends db_connection
     /**
      * Add a new customer to the database
      */
-    public function addCustomer($customer_name, $customer_email, $customer_pass, $customer_country, $customer_city, $customer_contact, $user_role = 2)
+    public function addCustomer($customer_name, $customer_email, $customer_pass, $customer_country, $customer_city, $customer_contact, $user_role = 2, $subscription_tier = null, $subscription_status = 'active', $latitude = null, $longitude = null)
     {
         // Check if email already exists
         if ($this->getCustomerByEmail($customer_email)) {
@@ -73,8 +77,8 @@ class Customer extends db_connection
         $hashed_password = password_hash($customer_pass, PASSWORD_DEFAULT);
         
         // Prepare and execute insert statement
-        $stmt = $this->db->prepare("INSERT INTO customer (customer_name, customer_email, customer_pass, customer_country, customer_city, customer_contact, user_role) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssi", $customer_name, $customer_email, $hashed_password, $customer_country, $customer_city, $customer_contact, $user_role);
+        $stmt = $this->db->prepare("INSERT INTO customer (customer_name, customer_email, customer_pass, customer_country, customer_city, customer_contact, user_role, subscription_tier, subscription_status, latitude, longitude, location_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->bind_param("ssssssissdd", $customer_name, $customer_email, $hashed_password, $customer_country, $customer_city, $customer_contact, $user_role, $subscription_tier, $subscription_status, $latitude, $longitude);
         
         if ($stmt->execute()) {
             return $this->db->insert_id;
@@ -191,4 +195,6 @@ class Customer extends db_connection
     public function getCustomerContact() { return $this->customer_contact; }
     public function getCustomerImage() { return $this->customer_image; }
     public function getUserRole() { return $this->user_role; }
+    public function getSubscriptionTier() { return $this->subscription_tier; }
+    public function getSubscriptionStatus() { return $this->subscription_status; }
 }
