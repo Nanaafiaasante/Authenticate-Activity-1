@@ -14,6 +14,7 @@ let currentFilters = {
 };
 let categories = [];
 let brands = [];
+let userLocation = null;
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -204,43 +205,77 @@ function displaySearchResults(products, total, totalPages) {
         products.sort((a, b) => parseFloat(b.product_price) - parseFloat(a.product_price));
     }
     
-    let html = '<div class="row">';
-    products.forEach(product => {
-        const imageUrl = product.product_image ? `../${product.product_image}` : '../uploads/default-product.jpg';
-        const price = parseFloat(product.product_price).toFixed(2);
+    // Get user location and display products with distance
+    getUserLocation().then(userLoc => {
+        let html = '<div class="row g-4">';
         
-        html += `
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="product-card">
-                    <img src="${imageUrl}" alt="${escapeHtml(product.product_title)}" 
-                         class="product-image" onerror="this.src='../uploads/default-product.jpg'">
-                    <div class="product-body">
-                        <h5 class="product-title">${escapeHtml(product.product_title)}</h5>
-                        <p class="product-vendor">
-                            <i class="bi bi-person me-1"></i>${escapeHtml(product.vendor_name || 'Unknown Vendor')}
-                        </p>
-                        <div class="product-badges">
-                            <span class="badge-custom">${escapeHtml(product.cat_name || 'Uncategorized')}</span>
-                            <span class="badge-custom badge-brand">${escapeHtml(product.brand_name || 'No Brand')}</span>
-                        </div>
-                        <div class="product-price">GHS ${price}</div>
-                        <div class="product-actions">
-                            <a href="single_product.php?id=${product.product_id}" class="btn btn-primary-custom">
-                                <i class="bi bi-eye me-1"></i>View Details
-                            </a>
-                            <button class="btn-add-cart" onclick="addToCart(${product.product_id}, '${escapeHtml(product.product_title).replace(/'/g, "\\'")}')">
-                                <i class="bi bi-cart-plus me-1"></i>Add to Cart
-                            </button>
+        products.forEach(product => {
+            const imageUrl = product.product_image ? `../${product.product_image}` : '../uploads/default-product.jpg';
+            const price = parseFloat(product.product_price).toFixed(2);
+            
+            // Calculate distance if both user location and vendor location are available
+            let distanceInfo = '';
+            if (userLoc && product.vendor_latitude && product.vendor_longitude) {
+                const distance = calculateDistance(
+                    userLoc.latitude,
+                    userLoc.longitude,
+                    parseFloat(product.vendor_latitude),
+                    parseFloat(product.vendor_longitude)
+                );
+                distanceInfo = `
+                    <p class="product-distance">
+                        <i class="bi bi-pin-map-fill"></i> ${formatDistance(distance)}
+                    </p>
+                `;
+            } else if (product.vendor_city) {
+                distanceInfo = `
+                    <p class="product-location">
+                        <i class="bi bi-geo-alt"></i> ${escapeHtml(product.vendor_city)}
+                    </p>
+                `;
+            }
+            
+            html += `
+                <div class="col-md-6 col-lg-4">
+                    <div class="product-card" onclick="window.location.href='single_product.php?id=${product.product_id}'" style="cursor: pointer;">
+                        <img src="${imageUrl}" alt="${escapeHtml(product.product_title)}" 
+                             class="product-image" onerror="this.src='../uploads/default-product.jpg'">
+                        <div class="product-body">
+                            <h5 class="product-title">${escapeHtml(product.product_title)}</h5>
+                            <p class="product-vendor">
+                                <i class="bi bi-person"></i> by <a href="vendor_profile.php?id=${product.vendor_customer_id}" onclick="event.stopPropagation();" style="color: #C9A961; text-decoration: none; font-weight: 600;">${escapeHtml(product.vendor_name || 'Unknown Vendor')}</a>
+                            </p>
+                            ${distanceInfo}
+                            <div class="product-price">GHS ${price}</div>
+                            <div class="product-badges">
+                                <span class="badge-custom">${escapeHtml(product.cat_name || 'Uncategorized')}</span>
+                                <span class="badge-custom badge-brand">${escapeHtml(product.brand_name || 'No Brand')}</span>
+                            </div>
+                            <div id="packageItems${product.product_id}" class="package-items-preview"></div>
+                            <div class="product-actions">
+                                <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart(${product.product_id}, '${escapeHtml(product.product_title).replace(/'/g, "\\'")}')">
+                                    <i class="bi bi-cart-plus me-1"></i>Add to Cart
+                                </button>
+                                <button class="btn-wishlist-icon" data-product-id="${product.product_id}" onclick="event.stopPropagation(); toggleWishlist(${product.product_id}, this);" title="Add to Wishlist">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
+        });
+        
+        html += '</div>';
+        container.innerHTML = html;
+        
+        // Load package items for all products after DOM is ready
+        products.forEach(product => {
+            loadProductPackageItems(product.product_id);
+        });
+        
+        renderPagination(totalPages, currentPage);
     });
-    html += '</div>';
-    
-    container.innerHTML = html;
-    renderPagination(totalPages, currentPage);
 }
 
 /**
@@ -303,9 +338,195 @@ function clearFilters() {
 }
 
 /**
+ * Get user's current location
+ */
+function getUserLocation() {
+    return new Promise((resolve) => {
+        if (!navigator.geolocation) {
+            console.log('Geolocation not supported');
+            resolve(null);
+            return;
+        }
+
+        if (userLocation) {
+            resolve(userLocation);
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLocation = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+                resolve(userLocation);
+            },
+            (error) => {
+                console.log('Error getting location:', error);
+                resolve(null);
+            },
+            { timeout: 5000, maximumAge: 300000 }
+        );
+    });
+}
+
+/**
+ * Calculate distance between two coordinates using Haversine formula
+ */
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in kilometers
+}
+
+/**
+ * Convert degrees to radians
+ */
+function toRadians(degrees) {
+    return degrees * (Math.PI / 180);
+}
+
+/**
+ * Format distance for display
+ */
+function formatDistance(distance) {
+    if (distance < 1) {
+        return `${Math.round(distance * 1000)}m away`;
+    }
+    return `${distance.toFixed(1)}km away`;
+}
+
+/**
+ * Load package items for a product
+ */
+function loadProductPackageItems(productId) {
+    fetch(`../actions/get_package_items_action.php?product_id=${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Package items response:', data); // Debug log
+            if (data.status === 'success' && data.items && data.items.length > 0) {
+                displayPackageItemsPreview(productId, data.items);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading package items:', error);
+        });
+}
+
+/**
+ * Display package items preview in product card
+ */
+function displayPackageItemsPreview(productId, items) {
+    const container = document.getElementById(`packageItems${productId}`);
+    if (!container || !items || items.length === 0) return;
+    
+    const maxPreview = 3;
+    const displayItems = items.slice(0, maxPreview);
+    const remaining = items.length - maxPreview;
+    
+    let html = `
+        <div class="package-preview-section">
+            <div class="package-preview-title">
+                <i class="bi bi-box-seam"></i> Includes (click to customize)
+            </div>
+    `;
+    
+    displayItems.forEach(item => {
+        html += `
+            <div class="package-preview-item">
+                <i class="bi bi-check-circle-fill"></i> ${escapeHtml(item.item_name)}
+            </div>
+        `;
+    });
+    
+    if (remaining > 0) {
+        html += `
+            <div class="package-preview-more">
+                +${remaining} more item${remaining > 1 ? 's' : ''}
+            </div>
+        `;
+    }
+    
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+/**
+ * Toggle wishlist for product
+ */
+function toggleWishlist(productId, button) {
+    // Check if user is logged in
+    fetch('../actions/add_to_wishlist_action.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `product_id=${productId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const icon = button.querySelector('i');
+            if (icon.classList.contains('bi-heart-fill')) {
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+                showToast('Removed from wishlist', 'success');
+            } else {
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+                showToast('Added to wishlist!', 'success');
+            }
+        } else {
+            if (data.message && data.message.includes('login')) {
+                window.location.href = '../login/login.php';
+            } else {
+                showToast(data.message || 'Error updating wishlist', 'error');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Error updating wishlist', 'error');
+    });
+}
+
+/**
+ * Show toast notification
+ */
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast-notification toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background: ${type === 'success' ? '#2d5a3a' : '#dc3545'};
+        color: white;
+        border-radius: 8px;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease-out;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+/**
  * Render pagination
  */
-function renderPagination(totalPages, currentPage) {
+function renderPagination(totalPages, current) {
     const container = document.getElementById('paginationContainer');
     
     if (totalPages <= 1) {
