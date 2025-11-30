@@ -336,6 +336,7 @@ class Product extends db_connection
         $query = mysqli_real_escape_string($this->db_conn(), $query);
         
         $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_id as vendor_customer_id,
                        cu.customer_name as vendor_name,
                        cu.customer_city as vendor_city,
                        cu.latitude as vendor_latitude,
@@ -372,6 +373,7 @@ class Product extends db_connection
         $cat_id = mysqli_real_escape_string($this->db_conn(), $cat_id);
         
         $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_id as vendor_customer_id,
                        cu.customer_name as vendor_name,
                        cu.customer_city as vendor_city,
                        cu.latitude as vendor_latitude,
@@ -406,6 +408,7 @@ class Product extends db_connection
         $brand_id = mysqli_real_escape_string($this->db_conn(), $brand_id);
         
         $sql = "SELECT p.*, c.cat_name, b.brand_name, 
+                       cu.customer_id as vendor_customer_id,
                        cu.customer_name as vendor_name,
                        cu.customer_city as vendor_city,
                        cu.latitude as vendor_latitude,
