@@ -118,7 +118,8 @@ $user_role = $_SESSION['user_role'] ?? 0;
 				<div class="col-md-6">
 					<div class="about-content">
 						<h3>Our Mission</h3>
-						<p>We empower vendors to showcase their services while providing couples with a curated selection of Ghana's best wedding professionals. From traditional ceremonies to modern celebrations, we bridge the gap between vision and reality.</p>
+						<p>To modernize Ghana's wedding industry by providing a centralized platform. We empower planners with verified profiles and business tools to expand their reach, while offering couples a free, transparent service to discover and book reliable professionals, thereby raising industry standards and fostering trust.
+</p>
 					</div>
 				</div>
 			</div>
